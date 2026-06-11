@@ -25,7 +25,7 @@ En fase de planificación y diseño de requerimientos
 * Rama main: Es la rama principal y contiene la versión estable y funcional del sistema. No se permite realizar push directo a esta rama.  
 * Ramas de funcionalidad: Cada nueva tarea derivada de las historias de usuario debe desarrollarse en su propia rama, creada siempre desde main.
 
-##Flujo de cambios:
+### Flujo de cambios:
 * Antes de trabajar, cada integrante debe asegurar que su rama local esté actualizada con main.
 * Al finalizar una funcionalidad, se debe abrir un Pull Request (PR).
 * Gestión de conflictos: En caso de conflictos durante el merge, el responsable de la rama de funcionalidad debe resolverlos manteniendo la coherencia con los requerimientos definidos en el proyecto.
