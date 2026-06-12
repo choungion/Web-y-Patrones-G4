@@ -4,10 +4,10 @@
 Proyecto de desarrollo de una solución tecnológica para el Centro de Artes Taru, ubicado en Nicoya de Guanacaste. El sistema web busca centralizar la información y automatizar los procesos administrativos clave como la matrícula de estudiantes, el control de asistencia, la gestión de pagos y la comunicación con los usuarios.
 
 ## Integrantes
-* Diana Herrera Valerio
-* Robert Monge Garro
-* Edward Andrey Ruiz Montero
-* Pablo Joohyung Lee Fuentes
+* Diana Herrera Valerio.
+* Robert Monge Garro.
+* Edward Andrey Ruiz Montero.
+* Pablo Joohyung Lee Fuentes.
 
 ## Objetivos del Proyecto
 * Optimizar la gestión administrativa del centro
