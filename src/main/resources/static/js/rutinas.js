@@ -1,4 +1,3 @@
-// funcion para hacer un preview de una imagen 
 function mostrarImagen(input) {
     if (input.files && input.files[0]) {
         const imagen = input.files[0];
@@ -18,10 +17,40 @@ function mostrarImagen(input) {
 //Para insertar información en el modal según el registro...
 document.addEventListener('DOMContentLoaded', function () {
     const confirmModal = document.getElementById('confirmModal');
+    if (!confirmModal) {
+        return;
+    }
+    const idInput = document.getElementById('modalId');
+    const submitBtn = confirmModal.querySelector('button[type="submit"]');
+
     confirmModal.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget;
-        document.getElementById('modalId').value = button.getAttribute('data-bs-id');
+        const id = button ? button.getAttribute('data-bs-id') : null;
+
+        if (!id) {
+            // No hay un id valido: no dejamos continuar la eliminacion.
+            console.error('No se pudo determinar el id a eliminar; se cancela la operacion.');
+            idInput.value = '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+            }
+            return;
+        }
+
+        idInput.value = id;
         document.getElementById('modalDescripcion').textContent = button.getAttribute('data-bs-descripcion');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Ultima linea de defensa: si por cualquier motivo el id quedo vacio,
+    // no dejamos que el formulario llegue al servidor.
+    confirmModal.querySelector('form').addEventListener('submit', function (event) {
+        if (!idInput.value) {
+            event.preventDefault();
+            console.error('Formulario de eliminacion bloqueado: falta idEstudiante.');
+        }
     });
 });
 

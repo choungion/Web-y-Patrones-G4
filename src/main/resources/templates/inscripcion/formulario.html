@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"></header>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+
+        <section class="container py-5">
+            <a th:href="@{/inscripcion/listado}" class="btn btn-outline-taru mb-3">
+                <i class="fa-solid fa-arrow-left"></i> [[#{inscripcion.volver}]]</a>
+
+            <div class="row g-4">
+                <div class="col-md-5">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <span class="badge bg-success mb-2" th:if="${curso.cupo != null and curso.cupo > 0}">
+                                Cupos disponibles: [[${curso.cupo}]]</span>
+                            <h4>[[${curso.nombre}]]</h4>
+                            <p th:text="${curso.descripcion}"></p>
+                            <ul class="list-unstyled text-muted">
+                                <li><i class="fa-solid fa-child-reaching"></i> [[#{curso.edadRecomendada}]]: [[${curso.edadRecomendada}]]</li>
+                                <li><i class="fa-solid fa-calendar-days"></i> [[${curso.dias}]]</li>
+                                <li><i class="fa-solid fa-clock"></i> [[${curso.horario}]]</li>
+                                <li th:if="${curso.precioMensual != null}"><i class="fa-solid fa-money-bill"></i> [[#{curso.precio}]]: [[${#numbers.formatCurrency(curso.precioMensual)}]]</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="card">
+                        <div class="card-header"><h5 class="mb-0">[[#{inscripcion.titulo}]]</h5></div>
+                        <div class="card-body">
+                            <form th:action="@{/inscripcion/guardar}" th:object="${estudiante}"
+                                  class="was-validated" method="post">
+                                <input type="hidden" name="idCurso" th:value="${curso.idCurso}"/>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label>[[#{estudiante.nombre}]]</label>
+                                        <input type="text" name="nombre" class="form-control" maxlength="100" required/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>[[#{estudiante.apellido}]]</label>
+                                        <input type="text" name="apellido" class="form-control" maxlength="100" required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label>[[#{inscripcion.fechaNacimiento}]]</label>
+                                        <input type="date" name="fechaNacimiento" class="form-control"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>[[#{inscripcion.telefono}]]</label>
+                                        <input type="text" name="telefono" class="form-control" maxlength="20" required/>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{inscripcion.correo}]]</label>
+                                    <input type="email" name="correo" class="form-control" maxlength="100" required/>
+                                </div>
+                                <h6 class="text-muted mt-3">[[#{inscripcion.responsable}]] <span class="fw-normal">(si el estudiante es menor de edad)</span></h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label>[[#{estudiante.responsable}]]</label>
+                                        <input type="text" name="responsableNombre" class="form-control" maxlength="100"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>[[#{estudiante.telefono}]] [[#{estudiante.responsable}]]</label>
+                                        <input type="text" name="responsableTelefono" class="form-control" maxlength="20"/>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fa-solid fa-paper-plane"></i> [[#{inscripcion.enviar}]]</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>

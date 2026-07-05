@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"></header>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+
+        <section class="container py-5">
+            <h2 class="mb-2"><i class="fa-solid fa-clipboard-list"></i> [[#{inscripcion.titulo}]]</h2>
+            <p class="text-muted">[[#{inscripcion.seleccionarCurso}]]</p>
+
+            <div class="row g-4 mt-2" th:if="${cursos != null and !cursos.empty}">
+                <div class="col-md-4" th:each="c : ${cursos}">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">[[${c.nombre}]]</h5>
+                            <p class="card-text small text-muted" th:text="${c.descripcion}"></p>
+                            <ul class="list-unstyled small text-muted mb-3">
+                                <li><i class="fa-solid fa-child-reaching"></i> [[${c.edadRecomendada}]]</li>
+                                <li><i class="fa-solid fa-calendar-days"></i> [[${c.dias}]] &middot; [[${c.horario}]]</li>
+                                <li><i class="fa-solid fa-users"></i> [[#{curso.cupo}]]: [[${c.cupo}]]</li>
+                            </ul>
+                            <a th:href="@{/inscripcion/formulario/}+${c.idCurso}" class="btn btn-primary w-100">
+                                <i class="fa-solid fa-pen"></i> [[#{inscripcion.enviar}]]</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center py-5" th:if="${cursos == null or cursos.empty}">
+                <p>[[#{inscripcion.sinCursos}]]</p>
+            </div>
+        </section>
+
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>
