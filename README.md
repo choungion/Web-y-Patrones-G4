@@ -16,7 +16,10 @@ Proyecto de desarrollo de una solución tecnológica para el Centro de Artes Tar
 * Facilitar la inscripción en línea y dar visibilidad a la oferta académica
 
 ## Tecnologías
-*Por determinar*
+* Java
+* JavaScript
+* Html
+* Css
 
 ## Estado del Proyecto
 En fase de planificación y diseño de requerimientos
