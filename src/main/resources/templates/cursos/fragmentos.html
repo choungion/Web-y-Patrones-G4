@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <!-- fragmento 1: Registrar estudiante -->
+        <section th:fragment="agregar">
+            <div class="row py-4 mb-2 bg-light">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary"
+                            data-bs-toggle="modal" data-bs-target="#agregarCursoModal">
+                        <i class="fa-solid fa-plus"></i> [[#{curso.agregar}]]</button>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="agregarCursoModal" tabindex="-1"
+                 aria-labelledby="agregarCursoLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h1 class="modal-title fs-5" id="agregarCursoLabel">
+                                <i class="fa-solid fa-user-graduate"></i> [[#{curso.agregar}]]</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form th:action="@{/cursos/guardar}" th:object="${curso}"
+                              class="was-validated" enctype="multipart/form-data" method="post">
+                            <div class="modal-body">
+                                <div class=" mb-3">
+                                    <label>[[#{curso.nombre}]]</label>
+                                    <input type="text" class="form-control" name="nombre" th:field="*{nombre}" maxlength="100" required/>
+                                </div>
+
+                                <div class=" mb-3">
+                                    <label>[[#{curso.descripcion}]]</label>
+                                    <textarea type="text" class="form-control" name="descripcion" th:field="*{descripcion}"maxlength="250" rows="3" required></textarea>
+                                </div>
+
+                                <div class=" mb-3">
+                                    <label>[[#{curso.edadRecomendada}]]</label>
+                                    <input type="text" class="form-control" name="edadRecomendada" th:field="*{edadRecomendada}" maxlength="20"/>
+                                </div>
+
+                                <div class=" mb-3">
+                                    <label>[[#{curso.dias}]]</label>
+                                    <input type="text" class="form-control" name="dias" th:field="*{dias}" maxlength="50"/>
+                                </div>
+
+                                <div class=" mb-3">
+                                    <label>[[#{curso.horario}]]</label>
+                                    <input type="text" class="form-control" name="horario" th:field="*{horario}" maxlength="30"/>
+                                </div>
+                                <div class=' mb-3'>
+                                    <label>[[#{curso.cupo}]]</label>
+                                    <input type="number" min="0" name='cupo' th:field="*{cupo}" class='form-control' required="true"/>
+                                </div>
+                                <div class=' mb-3'>
+                                    <label>[[#{curso.precio}]]</label>
+                                    <input type="number" min="0" name='precioMensual' th:field="*{precioMensual}" class='form-control' required="true"/>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" name="activo" th:field="*{activo}"/>
+                                    <label class="form-check-label">[[#{curso.activo}]]</label>
+                                </div>
+                                <div class=" mb-3">
+                                    <label>[[#{curso.imagen}]]</label>
+                                    <input class="form-control" type="file" name="fotoFile" onchange="mostrarImagen(this);" accept="image/*"/>
+                                    <img id="blah" th:src="${curso.rutaImagen}" alt="imagen" height="120" class="mt-2 rounded"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="fa-solid fa-xmark"></i> [[#{accion.cerrar}]]</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-floppy-disk"></i> [[#{accion.registrar}]]</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- fragmento 2: Listado de cursos -->
+        <section th:fragment="listado" class="p-3">
+            <div class="d-flex justify-content-center">
+                <div class="w-75">
+                    <div class="row p-3">
+                        <div class="card p-2">
+                            <div class="card-header"style="background-color:#1f4d3a; color:white;"><h4>[[#{curso.listado}]]</h4></div>
+                            <div class="card-body">
+                                <div th:if="${cursos != null and !cursos.empty}">
+                                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 ">
+
+                                        <div class="col" th:each="c : ${cursos}">
+                                            <div class="card h-100 shadow border-0 curso-card">
+
+                                                <img th:src="${c.rutaImagen}"
+                                                     class="card-img-top curso-img"
+                                                     alt="Curso">
+
+
+                                                    <div class="card-body">
+
+                                                        <h5 class="card-title">
+                                                            [[${c.nombre}]]
+                                                        </h5>
+
+                                                        <small class="text-muted">
+                                                            [[${c.idCurso}]]
+                                                        </small>
+
+                                                        <p class="card-text text-muted">
+                                                            <strong>[[#{curso.descripcion}]]:</strong>
+                                                            [[${c.descripcion}]]
+                                                        </p>
+
+                                                        <p class="card-text text-muted">
+                                                            <strong>[[#{curso.edadRecomendada}]]:</strong>
+                                                            [[${c.edadRecomendada}]]
+                                                        </p>
+
+                                                        <p class="card-text text-muted">
+                                                            <strong>[[#{curso.horario}]]:</strong>
+                                                            [[${c.dias}]] &middot; [[${c.horario}]]
+                                                        </p>
+
+                                                        <p class="card-text text-muted">
+                                                            <strong>[[#{curso.cupo}]]:</strong>
+                                                            [[${c.cupo}]]
+                                                        </p>
+
+                                                        <p class="card-text text-muted">
+                                                            <strong>[[#{curso.estado}]]:</strong>
+                                                            <span th:if="${c.activo}" class="badge bg-success">[[#{curso.activo}]]</span>
+                                                            <span th:unless="${c.activo}" class="badge bg-secondary">[[#{curso.inactivo}]]</span>
+                                                        </p>                                         
+
+                                                        <h5 class="text-success fw-bold mt-3">
+                                                            <strong>[[#{curso.precio}]]:</strong>
+                                                            ₡ [[${#numbers.formatDecimal(c.precioMensual,1,2)}]]
+                                                        </h5>             
+
+                                                    </div>
+
+                                                    <div class="card-footer text-center d-flex justify-content-center gap-2">
+
+                                                        <button type="button"
+                                                                class="btn btn-outline-danger btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#confirmModal"
+                                                                th:data-bs-id="${c.idCurso}"
+                                                                th:data-bs-nombreComun="${c.nombre}">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                            Eliminar
+                                                        </button>
+
+                                                        <a th:href="@{'/cursos/modifica/'+${c.idCurso}}"
+
+                                                           class="btn btn-outline-warning btn-sm">
+                                                            <i class="fas fa-solid fa-pen"></i>
+                                                            Editar
+                                                        </a>
+
+                                                    </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="text-center p-2" th:if="${cursos == null or cursos.empty}">
+                                    <span>[[#{lista.vacia}]]</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- fragmento 3 editar-->
+        <section th:fragment="editar">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <form method="POST" th:action="@{/cursos/guardar}"
+                          th:object="${curso}" class="was-validated" enctype="multipart/form-data">
+                        <input type="hidden" name="idCurso" th:field="*{idCurso}"/>
+                        <input type="hidden" th:field="*{rutaImagen}">
+                        <div class="card">
+                            <div class="card-header"><h4>[[#{accion.actualizar}]] [[#{plantilla.cursos}]]</h4></div>
+                            <div class="card-body">
+
+                                <div class=" mb-3">
+                                    <label>[[#{curso.nombre}]]</label>
+                                    <input type="text" class="form-control" name="nombre" th:field="*{nombre}" maxlength="100" required/>
+                                </div>
+
+                                <div class=" mb-3">
+                                    <label>[[#{curso.descripcion}]]</label>
+                                    <textarea type="text" class="form-control" name="descripcion" th:field="*{descripcion}"maxlength="250" rows="3" required></textarea>
+                                </div>
+
+                                <div class=" mb-3">
+                                    <label>[[#{curso.edadRecomendada}]]</label>
+                                    <input type="text" class="form-control" name="edadRecomendada" th:field="*{edadRecomendada}" maxlength="20"/>
+                                </div>
+
+                                <div class=" mb-3">
+                                    <label>[[#{curso.dias}]]</label>
+                                    <input type="text" class="form-control" name="dias" th:field="*{dias}" maxlength="50"/>
+                                </div>
+
+                                <div class=" mb-3">
+                                    <label>[[#{curso.horario}]]</label>
+                                    <input type="text" class="form-control" name="horario" th:field="*{horario}" maxlength="30"/>
+                                </div>
+                                <div class=' mb-3'>
+                                    <label>[[#{curso.cupo}]]</label>
+                                    <input type="number" min="0" name='cupo' th:field="*{cupo}" class='form-control' required="true"/>
+                                </div>
+                                <div class=' mb-3'>
+                                    <label>[[#{curso.precio}]]</label>
+                                    <input type="number" min="0" name='precioMensual' th:field="*{precioMensual}" class='form-control' required="true"/>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" name="activo" th:field="*{activo}"/>
+                                    <label class="form-check-label">[[#{curso.activo}]]</label>
+                                </div>
+                                <div class=" mb-3">
+                                    <label>[[#{curso.imagen}]]</label>
+                                    <input class="form-control" type="file" name="fotoFile" onchange="mostrarImagen(this);" accept="image/*"/>
+                                    <img id="blah" th:src="${curso.rutaImagen}" alt="imagen" height="120" class="mt-2 rounded"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row py-4 mb-4 bg-light">
+                            <div class="col-md-4 d-grid">
+                                <a th:href="@{/cursos/listado}" class="btn btn-primary">
+                                    <i class="fas fa-arrow-left"></i> [[#{accion.regresar}]]</a>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-check"></i> [[#{accion.guardar}]]</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- fragmento 4: confirmar eliminacion -->
+        <section th:fragment="confirmarEliminar">
+            <div class="modal fade" id="confirmModal" tabindex="-1"
+                 aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <form th:action="@{/cursos/eliminar}" method="post">
+                            <input type="hidden" name="idCurso" id="modalId"/>
+                            <div class="modal-header bg-warning text-white">
+                                <h5 class="modal-title" id="modalLabel">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> [[#{accion.confirmar}]]
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>[[#{accion.confirmar.texto1}]] <span id="modalDescripcion"></span>?</p>
+                                <h6>[[#{accion.confirmar.texto2}]]</h6>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash"></i> [[#{accion.eliminar}]]
+                                </button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="fa-solid fa-xmark"></i> [[#{accion.cerrar}]]
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

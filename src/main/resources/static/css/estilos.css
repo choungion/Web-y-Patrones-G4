@@ -66,3 +66,32 @@ footer {
     color: #ffffff;
     padding: 80px 0;
 }
+
+.curso-card{
+    border-radius:15px;
+    overflow:hidden;
+    transition:all .3s ease;
+}
+
+.curso-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 .8rem 2rem rgba(0,0,0,.15);
+}
+
+.curso-img{
+    height:160px;
+    object-fit:cover;
+}
+
+.card-title{
+    font-weight:600;
+}
+
+.card-text{
+    font-size:.9rem;
+}
+
+.card-footer{
+    background:white;
+    border-top:none;
+}
