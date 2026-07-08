@@ -6,42 +6,7 @@
 
         <section th:replace="~{fragmentos :: cards}"></section>
         <section th:replace="~{fragmentos :: servicios}"></section>
-        <section class="container py-5 text-center">
-            <h1 class="display-6 fw-bold">[[#{index.hero.titulo}]]</h1>
-            <p class="lead">[[#{index.hero.subtitulo}]]</p>
-            <div class="row justify-content-center g-4 mt-3">
-                <div class="col-md-4">
-                    <div class="card h-100 p-4 text-center shadow-sm">
-                        <i class="fa-solid fa-clipboard-list fa-2x mb-3"></i>
-                        <h5>[[#{inscripcion.titulo}]]</h5>
-                        <p class="small text-muted">Inscribete al curso de tu interes</p>
-                        <a th:href="@{/inscripcion/listado}" class="btn bg-taru-naranja mt-2">
-                            <i class="fa-solid fa-arrow-right"></i> [[#{inscripcion.titulo}]]</a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 p-4 text-center shadow-sm">
-                        <i class="fa-solid fa-user-graduate fa-2x mb-3"></i>
-                        <h5>[[#{plantilla.estudiantes}]]</h5>
-                        <p class="small text-muted">Registro y consulta de estudiantes matriculados.</p>
-                        <a th:href="@{/estudiante/listado}" class="btn btn-primary mt-2">
-                            <i class="fa-solid fa-arrow-right"></i> [[#{plantilla.estudiantes}]]</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="container pb-5" th:if="${cursos != null and !cursos.empty}">
-            <h3 class="text-center mb-4">[[#{index.nuestrosCursos}]]</h3>
-            <div class="row g-3">
-                <div class="col-md-3" th:each="c : ${cursos}">
-                    <div class="card h-100 text-center p-3">
-                        <h6>[[${c.nombre}]]</h6>
-                        <p class="small text-muted mb-0">[[${c.edadRecomendada}]]</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+       
 
         <footer th:replace="~{general/fragmentos :: footer}"></footer>
     </body>
