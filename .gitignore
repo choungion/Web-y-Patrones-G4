@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 src/main/resources/firebase/tienda-d9de9-firebase-adminsdk-fbsvc-7a7af9343b.json
+/src/main/resources/firebase/taru-8a84a-firebase-adminsdk-fbsvc-540a564f73.json
