@@ -95,3 +95,45 @@ footer {
     background:white;
     border-top:none;
 }
+/* Seccion de contacto en el footer */
+.footer-contacto a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-contacto a:hover {
+    color: var(--taru-naranja);
+    text-decoration: underline;
+}
+
+.footer-contacto i {
+    color: var(--taru-naranja);
+    width: 1.1rem;
+    text-align: center;
+}
+
+/* Iconos de redes sociales en el footer */
+.footer-redes {
+    display: flex;
+    gap: .6rem;
+    flex-wrap: wrap;
+}
+
+.footer-red-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-size: 1.1rem;
+    transition: all .2s ease;
+}
+
+.footer-red-icon:hover {
+    background-color: var(--taru-naranja);
+    color: #ffffff;
+    transform: translateY(-3px);
+}
