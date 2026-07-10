@@ -110,7 +110,7 @@ public class AsistenciaController {
         asistenciaService.save(asistencia);
 
         redirectAttributes.addFlashAttribute(
-                "todoOK",
+                "todoOk",
                 "La asistencia se guardó correctamente."
         );
 
@@ -186,7 +186,7 @@ public class AsistenciaController {
             asistenciaService.delete(idAsistencia);
 
             redirectAttributes.addFlashAttribute(
-                    "todoOK",
+                    "todoOk",
                     "La asistencia se eliminó correctamente."
             );
         } catch (IllegalArgumentException e) {
