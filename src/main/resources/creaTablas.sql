@@ -93,3 +93,14 @@ insert into estudiante (nombre, apellido, fecha_nacimiento, telefono, correo, di
 insert into inscripcion (fecha_inscripcion, estado, id_estudiante, id_curso) values
 (CURDATE(), 'Confirmada', 1, 3),
 (CURDATE(), 'Pendiente', 2, 2);
+
+CREATE TABLE asistencia (
+    id_asistencia INT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATE NOT NULL,
+    estado VARCHAR(30) NOT NULL,
+    observaciones VARCHAR(255),
+    id_estudiante INT NOT NULL,
+    id_curso INT NOT NULL,
+    FOREIGN KEY (id_estudiante) REFERENCES estudiante(id_estudiante),
+    FOREIGN KEY (id_curso) REFERENCES curso(id_curso)
+)   ENGINE = InnoDB;
