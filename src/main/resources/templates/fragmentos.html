@@ -78,5 +78,65 @@
                 </div>
 
         </section>
+
+        <!-- fragmento 3: Card Nosotros -->
+        <section id="nosotros" th:fragment="nosotros" class="py-5">
+
+            <div class="container">
+
+                <div class="card shadow-lg border-0 rounded-4 overflow-hidden mx-auto"
+                     style="max-width:1100px;">
+
+                    <div class="row g-0">
+
+                        <!-- Imagen -->
+                        <div class="col-lg-5">
+
+                            <img th:src="@{/js/images/nosotros.png}"
+                                 class="img-fluid w-100 h-100"
+                                 style="object-fit:cover; min-height:520px;"
+                                 alt="Nosotros">
+
+                        </div>
+
+                        <!-- Información -->
+                        <div class="col-lg-7">
+
+                            <div class="card-body p-5">
+
+                                <h2 class="d-flex justify-content-center align-items-center fw-bold mb-4"
+                                    style="color:#C58B12;">
+
+                                    <img th:src="@{/js/images/logo color.png}"
+                                         width="80"
+                                         class="me-3"
+                                         alt="Logo TARU"/>
+
+                                    [[#{plantilla.nosotros}]]
+
+                                </h2>
+
+                                <p class="fs-5 text-secondary mb-4"
+                                   style="text-align:justify; line-height:1.8;">
+                                    [[#{nosotros.mensaje}]]
+                                </p>
+                                <p class="fs-5 text-secondary"
+                                   style="text-align:justify; line-height:1.8;">
+                                    [[#{nosotros.mensaje2}]]
+                                </p>
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
     </body>
 </html>
