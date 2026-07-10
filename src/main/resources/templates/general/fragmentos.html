@@ -28,7 +28,23 @@
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                             [[#{plantilla.administracion}]]</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" th:href="@{/estudiante/listado}"><i class="fa-solid fa-user-graduate"></i> [[#{plantilla.estudiantes}]]</a></li>
+
+                            <li>
+                                <a class="dropdown-item"
+                                   th:href="@{/estudiante/listado}">
+                                    <i class="fa-solid fa-user-graduate"></i>
+                                    [[#{plantilla.estudiantes}]]
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item"
+                                   th:href="@{/asistencia/listado}">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                    Asistencia
+                                </a>
+                            </li>
+
                         </ul>
                     </li>
                 </ul>
