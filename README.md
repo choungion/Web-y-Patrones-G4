@@ -9,7 +9,6 @@ Se debe agregar un wallet de fire base dentro de src/main/resources/firebase y a
 ## Integrantes
 * Diana Herrera Valerio.
 * Robert Monge Garro.
-* Edward Andrey Ruiz Montero.
 * Pablo Joohyung Lee Fuentes.
 
 ## Objetivos del Proyecto
