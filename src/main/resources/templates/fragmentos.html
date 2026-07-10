@@ -84,31 +84,31 @@
 
             <div class="container">
 
-                <div class="card shadow-lg border-0 rounded-4 overflow-hidden mx-auto"
-                     style="max-width:1100px;">
+                <div class="card card-nosotros shadow-lg border-0 rounded-4 overflow-hidden mx-auto"
+                     style="max-width:1200px;">
 
                     <div class="row g-0">
 
                         <!-- Imagen -->
-                        <div class="col-lg-5">
+                        <div class="col-lg-3" style="background-color:#FFF8E8;">
 
                             <img th:src="@{/js/images/nosotros.png}"
                                  class="img-fluid w-100 h-100"
-                                 style="object-fit:cover; min-height:520px;"
+                                 style="object-fit:cover; min-height:650px;"
                                  alt="Nosotros">
 
                         </div>
 
-                        <!-- Información -->
-                        <div class="col-lg-7">
+                        <!-- Nosotros -->
+                        <div class="col-lg-5">
 
-                            <div class="card-body p-5">
+                            <div class="card-body p-5 h-100">
 
                                 <h2 class="d-flex justify-content-center align-items-center fw-bold mb-4"
                                     style="color:#C58B12;">
 
                                     <img th:src="@{/js/images/logo color.png}"
-                                         width="80"
+                                         width="70"
                                          class="me-3"
                                          alt="Logo TARU"/>
 
@@ -116,14 +116,17 @@
 
                                 </h2>
 
-                                <p class="fs-5 text-secondary mb-4"
-                                   style="text-align:justify; line-height:1.8;">
-                                    [[#{nosotros.mensaje}]]
+                                <p class="text-secondary mb-4"
+                                   style="text-align:justify; line-height:1.9;">
+
+                                    [[#{nosotros.parrafo1}]]
+
                                 </p>
-                                <p class="fs-5 text-secondary"
-                                   style="text-align:justify; line-height:1.8;">
-                                    [[#{nosotros.mensaje2}]]
-                                </p>
+
+                                <p class="text-secondary"
+                                   style="text-align:justify; line-height:1.9;">
+
+                                    [[#{nosotros.parrafo2}]]
 
                                 </p>
 
@@ -131,12 +134,49 @@
 
                         </div>
 
+                        <!-- Misión y Visión -->
+                        <div class="col-lg-4"
+                             style="background-color:#FFF8E8;">
+
+                            <div class="card-body p-5 h-100">
+
+                                <h3 class="fw-bold mb-3"
+                                    style="color:#C58B12;">
+
+                                    <i class="fa-solid fa-bullseye me-2"></i>
+                                    [[#{plantilla.mision}]]
+
+                                </h3>
+
+                                <p class="text-secondary mb-5"
+                                   style="text-align:justify; line-height:1.9;">
+
+                                    [[#{nosotros.mision}]]
+
+                                </p>
+
+                                <hr>
+
+                                    <h3 class="fw-bold mt-5 mb-3"
+                                        style="color:#C58B12;">
+
+                                        <i class="fa-solid fa-eye me-2"></i>
+                                        [[#{plantilla.vision}]]
+
+                                    </h3>
+
+                                    <p class="text-secondary"
+                                       style="text-align:justify; line-height:1.9;">
+
+                                        [[#{nosotros.vision}]]
+
+                                    </p>
+
+                            </div>
+                        </div>
                     </div>
-
                 </div>
-
             </div>
-
         </section>
     </body>
 </html>
