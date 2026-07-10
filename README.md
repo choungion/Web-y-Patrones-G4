@@ -3,10 +3,12 @@
 ## Descripción
 Proyecto de desarrollo de una solución tecnológica para el Centro de Artes Taru, ubicado en Nicoya de Guanacaste. El sistema web busca centralizar la información y automatizar los procesos administrativos clave como la matrícula de estudiantes, el control de asistencia, la gestión de pagos y la comunicación con los usuarios.
 
+## Requisitos de ejecucion
+Se debe agregar un wallet de fire base dentro de src/main/resources/firebase y actualizar el "firebase.json.file=" dentro de appication.properties
+
 ## Integrantes
 * Diana Herrera Valerio.
 * Robert Monge Garro.
-* Edward Andrey Ruiz Montero.
 * Pablo Joohyung Lee Fuentes.
 
 ## Objetivos del Proyecto
@@ -16,10 +18,13 @@ Proyecto de desarrollo de una solución tecnológica para el Centro de Artes Tar
 * Facilitar la inscripción en línea y dar visibilidad a la oferta académica
 
 ## Tecnologías
-*Por determinar*
+* Java
+* JavaScript
+* Html
+* Css
 
 ## Estado del Proyecto
-En fase de planificación y diseño de requerimientos
+Hemos completado el 50% del desarrollo de los requerimientos solicitados por el cliente
 
 ## Para asegurar la integridad del código y la colaboración eficiente en el proyecto del Centro de Artes Taru, el equipo acuerda seguir las siguientes reglas:
 * Rama main: Es la rama principal y contiene la versión estable y funcional del sistema. No se permite realizar push directo a esta rama.  
