@@ -1,0 +1,74 @@
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{general/fragmentos :: head}"></head>
+
+<body>
+
+<header th:replace="~{general/fragmentos :: header}"></header>
+
+<div class="container mt-4">
+
+    <div class="mb-3">
+        <a th:href="@{/asistencia/listado}"
+           class="btn btn-secondary">
+            Regresar
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">
+                Historial de asistencia de
+                <span th:text="${estudiante.nombre + ' ' + estudiante.apellido}">
+                </span>
+            </h4>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-striped table-hover">
+
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Curso</th>
+                            <th>Estado</th>
+                            <th>Observaciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr th:each="a : ${asistencias}">
+                            <td th:text="${a.fecha}"></td>
+                            <td th:text="${a.curso.nombre}"></td>
+                            <td th:text="${a.estado}"></td>
+                            <td th:text="${a.observaciones}"></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div th:if="${asistencias == null or asistencias.empty}"
+                 class="alert alert-info">
+                Este estudiante todavía no tiene registros de asistencia.
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{general/fragmentos :: footer}"></footer>
+
+</body>
+</html>
