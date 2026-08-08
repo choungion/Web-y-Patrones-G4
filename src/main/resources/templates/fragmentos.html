@@ -15,15 +15,6 @@
                             <i class="fa-solid fa-arrow-right"></i> [[#{inscripcion.titulo}]]</a>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100 p-4 text-center shadow-sm">
-                        <i class="fa-solid fa-user-graduate fa-2x mb-3"></i>
-                        <h5>[[#{plantilla.estudiantes}]]</h5>
-                        <p class="small text-muted">Registro y consulta de estudiantes matriculados.</p>
-                        <a th:href="@{/estudiante/listado}" class="btn btn-primary mt-2">
-                            <i class="fa-solid fa-arrow-right"></i> [[#{plantilla.estudiantes}]]</a>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -92,7 +83,7 @@
                         <!-- Imagen -->
                         <div class="col-lg-3" style="background-color:#FFF8E8;">
 
-                            <img th:src="@{/js/images/nosotros.png}"
+                            <img th:src="${nosotrosInfo != null and nosotrosInfo.rutaImagen != null and !nosotrosInfo.rutaImagen.isEmpty()} ? ${nosotrosInfo.rutaImagen} : @{/js/images/nosotros.png}"
                                  class="img-fluid w-100 h-100"
                                  style="object-fit:cover; min-height:650px;"
                                  alt="Nosotros">
@@ -112,21 +103,21 @@
                                          class="me-3"
                                          alt="Logo TARU"/>
 
-                                    [[#{plantilla.nosotros}]]
+                                    [[${nosotrosInfo != null ? nosotrosInfo.titulo : #messages.msg('plantilla.nosotros')}]]
 
                                 </h2>
 
                                 <p class="text-secondary mb-4"
                                    style="text-align:justify; line-height:1.9;">
 
-                                    [[#{nosotros.parrafo1}]]
+                                    [[${nosotrosInfo != null ? nosotrosInfo.parrafo1 : #messages.msg('nosotros.parrafo1')}]]
 
                                 </p>
 
                                 <p class="text-secondary"
                                    style="text-align:justify; line-height:1.9;">
 
-                                    [[#{nosotros.parrafo2}]]
+                                    [[${nosotrosInfo != null ? nosotrosInfo.parrafo2 : #messages.msg('nosotros.parrafo2')}]]
 
                                 </p>
 
@@ -151,7 +142,7 @@
                                 <p class="text-secondary mb-5"
                                    style="text-align:justify; line-height:1.9;">
 
-                                    [[#{nosotros.mision}]]
+                                    [[${nosotrosInfo != null ? nosotrosInfo.mision : #messages.msg('nosotros.mision')}]]
 
                                 </p>
 
@@ -168,13 +159,34 @@
                                     <p class="text-secondary"
                                        style="text-align:justify; line-height:1.9;">
 
-                                        [[#{nosotros.vision}]]
+                                        [[${nosotrosInfo != null ? nosotrosInfo.vision : #messages.msg('nosotros.vision')}]]
 
                                     </p>
 
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- fragmento 4: vista previa de la galeria -->
+        <section th:fragment="galeriaPreview" th:if="${imagenesGaleria != null and !imagenesGaleria.empty}" class="py-5" style="background-color:#FFF8E8;">
+            <div class="container">
+                <h3 class="text-center mb-4" style="color:#1f4d3a;">[[#{galeria.titulo}]]</h3>
+                <div class="row row-cols-2 row-cols-lg-4 g-3">
+                    <div class="col" th:each="img : ${imagenesGaleria}">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img th:src="${img.rutaImagen}" class="card-img-top" style="height:160px; object-fit:cover;" alt="Galería"/>
+                            <div class="card-body py-2">
+                                <p class="card-text small mb-0">[[${img.titulo}]]</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a th:href="@{/galeria}" class="btn bg-taru-naranja">
+                        <i class="fa-solid fa-images"></i> [[#{galeria.verTodas}]]</a>
                 </div>
             </div>
         </section>

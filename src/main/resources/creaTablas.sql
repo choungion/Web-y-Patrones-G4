@@ -104,3 +104,180 @@ CREATE TABLE asistencia (
     FOREIGN KEY (id_estudiante) REFERENCES estudiante(id_estudiante),
     FOREIGN KEY (id_curso) REFERENCES curso(id_curso)
 )   ENGINE = InnoDB;
+
+-- Tabla de usuarios
+CREATE TABLE usuario (
+  id_usuario INT NOT NULL AUTO_INCREMENT,
+  username VARCHAR(30) NOT NULL UNIQUE,
+  password VARCHAR(512) NOT NULL,
+  nombre VARCHAR(50) NOT NULL,
+  apellidos VARCHAR(50) NOT NULL,
+  correo VARCHAR(100) NULL UNIQUE,
+  telefono VARCHAR(25) NULL,
+  ruta_imagen VARCHAR(1024),
+  activo BOOLEAN DEFAULT TRUE,
+  id_estudiante INT NULL,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id_usuario),
+  index ndx_username (username),
+  FOREIGN KEY (id_estudiante) REFERENCES estudiante(id_estudiante))
+  ENGINE = InnoDB;
+
+-- Tabla de roles
+CREATE TABLE rol (
+  id_rol INT NOT NULL AUTO_INCREMENT,
+  rol VARCHAR(20) UNIQUE,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id_rol))
+  ENGINE = InnoDB;
+
+-- Tabla de relación entre usuarios y roles
+CREATE TABLE usuario_rol (
+  id_usuario INT NOT NULL,
+  id_rol INT NOT NULL,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id_usuario, id_rol),
+  FOREIGN KEY fk_usuarioRol_usuario (id_usuario) REFERENCES usuario(id_usuario),
+  FOREIGN KEY fk_usuarioRol_rol (id_rol) REFERENCES rol(id_rol))
+  ENGINE = InnoDB;
+
+-- Tabla de rutas:
+CREATE TABLE ruta (
+    id_ruta INT AUTO_INCREMENT NOT NULL,
+    ruta VARCHAR(255) NOT NULL,
+    id_rol INT NULL,
+    requiere_rol BOOLEAN NOT NULL DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CHECK (id_rol IS NOT NULL OR requiere_rol = FALSE),
+    PRIMARY KEY (id_ruta),
+    FOREIGN KEY (id_rol) REFERENCES rol(id_rol))
+    ENGINE = InnoDB;
+
+CREATE TABLE galeria (
+  id_galeria INT NOT NULL AUTO_INCREMENT,
+  titulo VARCHAR(100) NOT NULL,
+  descripcion VARCHAR(255),
+  ruta_imagen VARCHAR(1024),
+  activo BOOLEAN DEFAULT TRUE,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id_galeria))
+  ENGINE = InnoDB;
+
+CREATE TABLE nosotros (
+  id_nosotros INT NOT NULL AUTO_INCREMENT,
+  titulo VARCHAR(100) NOT NULL,
+  parrafo1 TEXT,
+  parrafo2 TEXT,
+  mision TEXT,
+  vision TEXT,
+  ruta_imagen VARCHAR(1024),
+  activo BOOLEAN DEFAULT TRUE,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id_nosotros))
+  ENGINE = InnoDB;
+
+CREATE TABLE contacto (
+  id_contacto INT NOT NULL AUTO_INCREMENT,
+  telefono VARCHAR(25) NOT NULL,
+  direccion VARCHAR(255) NOT NULL,
+  correo VARCHAR(100) NOT NULL,
+  whatsapp VARCHAR(25),
+  facebook VARCHAR(255),
+  instagram VARCHAR(255),
+  horario VARCHAR(100),
+  activo BOOLEAN DEFAULT TRUE,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id_contacto))
+  ENGINE = InnoDB;
+
+-- Roles del sistema
+INSERT INTO rol (rol) VALUES ('ADMIN'), ('ESTUDIANTE');
+
+-- Usuario administrador de ejemplo contraseña: Admin123., usuario: admin
+INSERT INTO usuario (username, password, nombre, apellidos, correo, telefono, ruta_imagen, activo) VALUES
+('admin', '$2b$10$cI1eOc12wpqBcyCD5P/LmOmsu/i/IArmODbNgHm1bFz84B3bsoqO.', 'Jennifer', 'Ramos Cruz', 'admin@tarucentrodearte.com', '8364-6179', 'https://ui-avatars.com/api/?name=Admin+Taru&background=1f4d3a&color=fff', true);
+
+-- Usuario estudiante de ejemplo contraseña: Estudiante123., usuario: maria.lopez
+INSERT INTO usuario (username, password, nombre, apellidos, correo, telefono, ruta_imagen, activo, id_estudiante) VALUES
+('maria.lopez', '$2b$10$rO7gWGX9NpKK/xIvR26MUuhLNLDSfgw9vkNhgxTwPJcaVk7DDYRZC', 'Maria', 'Lopez', 'maria@correo.com', '6123-4567', 'https://ui-avatars.com/api/?name=Maria+Lopez&background=C58B12&color=fff', true, 1);
+
+-- Asignación de roles a los usuarios de ejemplo
+INSERT INTO usuario_rol (id_usuario, id_rol) VALUES
+(1, 1), -- admin ADMIN
+(2, 2); -- maria.lopez ESTUDIANTE
+
+-- Rutas que requieren el rol ADMIN
+INSERT INTO ruta (ruta, id_rol) VALUES
+('/cursos/listado', 1),
+('/cursos/guardar', 1),
+('/cursos/modifica/**', 1),
+('/cursos/eliminar', 1),
+('/estudiante/**', 1),
+('/encargado/**', 1),
+('/asistencia/listado', 1),
+('/asistencia/nuevo', 1),
+('/asistencia/guardar', 1),
+('/asistencia/modificar/**', 1),
+('/asistencia/eliminar', 1),
+('/inscripcion/listado', 1),
+('/galeria/listado', 1),
+('/galeria/guardar', 1),
+('/galeria/modifica/**', 1),
+('/galeria/eliminar', 1),
+('/nosotros/listado', 1),
+('/nosotros/guardar', 1),
+('/nosotros/modifica/**', 1),
+('/nosotros/eliminar', 1),
+('/contacto/listado', 1),
+('/contacto/guardar', 1),
+('/contacto/modificar/**', 1),
+('/contacto/eliminar', 1),
+('/usuario/**', 1),
+('/usuario_rol/**', 1),
+('/rol/**', 1);
+
+-- Rutas que requieren el rol ESTUDIANTE
+INSERT INTO ruta (ruta, id_rol) VALUES
+('/asistencia/historial/**', 2);
+
+-- Rutas públicas
+INSERT INTO ruta (ruta, requiere_rol) VALUES
+('/', false),
+('/index', false),
+('/login', false),
+('/logout', false),
+('/acceso_denegado', false),
+('/cursos/servicios', false),
+('/inscripcion/**', false),
+('/galeria', false),
+('/js/**', false),
+('/css/**', false),
+('/webjars/**', false),
+('/fav/**', false);
+
+INSERT INTO galeria (titulo, descripcion, ruta_imagen, activo) VALUES
+('Salón de Danza Contemporánea', 'Nuestro salón principal equipado con piso especializado para danza.', 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800', true),
+('Clase de Gimnasia Artística', 'Estudiantes practicando rutinas de gimnasia con equipo profesional.', 'https://images.unsplash.com/photo-1518310383802-640c2de311b6?w=800', true),
+('Ballet Infantil', 'Nuestras estudiantes más pequeñas durante una clase de ballet.', 'https://images.unsplash.com/photo-1544928147-79a2dbc1f389?w=800', true),
+('Presentación Anual', 'Estudiantes durante la muestra artística de fin de año.', 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800', true);
+
+INSERT INTO nosotros (titulo, parrafo1, parrafo2, mision, vision, ruta_imagen, activo) VALUES
+('Nosotros',
+ 'Hola, soy Jennifer Ramos, fundadora de TARU Centro de Artes. Soy bachiller en Danza por la Universidad Nacional de Costa Rica y cuento con experiencia como integrante de la Compañía Nacional de Danza. Mi pasión por el movimiento, la expresión artística y la enseñanza me motivó a crear un espacio donde personas de todas las edades puedan desarrollar sus habilidades, fortalecer su confianza y disfrutar del arte.',
+ 'TARU Centro de Artes nació en 2025 en Nicoya con el propósito de ampliar la oferta cultural de la región, ofreciendo disciplinas innovadoras y accesibles para la comunidad. Brindamos clases de danza contemporánea, gimnasia y macrogimnasia en un ambiente inclusivo que promueve el desarrollo físico, artístico y personal de cada estudiante.',
+ 'Brindar un espacio artístico y formativo donde niños, jóvenes y adultos desarrollen sus habilidades mediante la danza contemporánea, la gimnasia y la macrogimnasia, promoviendo la creatividad, el bienestar físico, la disciplina y la confianza en un ambiente inclusivo y de respeto.',
+ 'Ser un centro de artes reconocido en Guanacaste por inspirar el desarrollo integral de las personas a través del movimiento y la expresión artística, fortaleciendo la cultura y convirtiéndose en un referente de innovación, calidad y compromiso con la comunidad.',
+ '/js/images/nosotros.png',
+ true);
+
+INSERT INTO contacto (telefono, direccion, correo, whatsapp, facebook, instagram, horario, activo) VALUES
+('+506 8364 6179', 'Polideportivo de Nicoya, Nicoya, Costa Rica, 50201', 'tarucentrodearte@gmail.com', '+506 8364 6179',
+ 'https://www.facebook.com/share/1DSsFHpb2C/', 'https://www.instagram.com/tarucentrodearte?igsh=cjI2aDN3eXhtYmZm',
+ 'Lunes a sábado, 2:00 p.m. - 7:00 p.m.', true);

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <body>
+        <!-- fragmento 1: agregar registro Nosotros en ventana modal -->
+        <section th:fragment="agregar">
+            <div class="row py-4 mb-2 bg-light">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary"
+                            data-bs-toggle="modal" data-bs-target="#agregarNosotrosModal">
+                        <i class="fa-solid fa-plus"></i> [[#{nosotros.agregar}]]</button>
+                </div>
+            </div>
+            <div class="modal fade" id="agregarNosotrosModal" tabindex="-1" aria-labelledby="agregarNosotrosLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header text-white" style="background-color:#1f4d3a;">
+                            <h1 class="modal-title fs-5" id="agregarNosotrosLabel">
+                                <i class="fa-solid fa-people-group"></i> [[#{nosotros.agregar}]]</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form th:action="@{/nosotros/guardar}" th:object="${nosotros}" class="was-validated"
+                              enctype="multipart/form-data" method="post">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label>[[#{nosotros.tituloSeccion}]]</label>
+                                    <input type="text" class="form-control" name="titulo" th:field="*{titulo}" maxlength="100" required/>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{nosotros.campoParrafo1}]]</label>
+                                    <textarea class="form-control" name="parrafo1" th:field="*{parrafo1}" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{nosotros.campoParrafo2}]]</label>
+                                    <textarea class="form-control" name="parrafo2" th:field="*{parrafo2}" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{plantilla.mision}]]</label>
+                                    <textarea class="form-control" name="mision" th:field="*{mision}" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{plantilla.vision}]]</label>
+                                    <textarea class="form-control" name="vision" th:field="*{vision}" rows="2"></textarea>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" name="activo" th:field="*{activo}"/>
+                                    <label class="form-check-label">[[#{nosotros.activo}]]</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{nosotros.imagen}]]</label>
+                                    <input class="form-control" type="file" name="fotoFile" onchange="mostrarImagen(this);" accept="image/*"/>
+                                    <img id="blah" src="#" alt="imagen" height="120" class="mt-2 rounded"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="fa-solid fa-xmark"></i> [[#{accion.cerrar}]]</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-floppy-disk"></i> [[#{accion.guardar}]]</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- fragmento 2: listado de registros Nosotros -->
+        <section th:fragment="listado" class="p-3">
+            <div class="row p-3">
+                <div class="col-md-9">
+                    <div class="card p-2">
+                        <div class="card-header" style="background-color:#1f4d3a; color:white;"><h4>[[#{nosotros.listado}]]</h4></div>
+                        <div class="card-body">
+                            <div th:if="${registros != null and !registros.empty}">
+                                <table class="table table-striped table-hover align-middle">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>[[#{nosotros.tituloSeccion}]]</th>
+                                            <th>[[#{nosotros.activo}]]</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="n : ${registros}">
+                                            <td>[[${n.idNosotros}]]</td>
+                                            <td>[[${n.titulo}]]</td>
+                                            <td>
+                                                <span th:if="${n.activo}" class="badge bg-success">[[#{curso.activo}]]</span>
+                                                <span th:unless="${n.activo}" class="badge bg-secondary">[[#{curso.inactivo}]]</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-start gap-2">
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                            data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                                            th:data-bs-id="${n.idNosotros}"
+                                                            th:data-bs-descripcion="${n.titulo}">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                    <a th:href="@{/nosotros/modifica/{id}(id=${n.idNosotros})}" class="btn btn-warning btn-sm">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-center p-2" th:if="${registros == null or registros.empty}">
+                                <span>[[#{lista.vacia}]]</span></div>
+                            <p class="small text-muted mt-2 mb-0">[[#{nosotros.ayuda}]]</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center text-white mb-3" style="background-color:#C58B12;">
+                        <div class="card-body"><h3>[[#{nosotros.total}]]</h3>
+                            <h4 class="fs-2"><i class="fas fa-people-group"></i> [[${totalRegistros}]]</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- fragmento 3: editar registro Nosotros -->
+        <section th:fragment="editar">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <form method="POST" th:action="@{/nosotros/guardar}" th:object="${nosotros}" class="was-validated" enctype="multipart/form-data">
+                        <input type="hidden" name="idNosotros" th:field="*{idNosotros}"/>
+                        <input type="hidden" th:field="*{rutaImagen}"/>
+                        <div class="row py-4 mb-4 bg-light">
+                            <div class="col-md-4 d-grid">
+                                <a th:href="@{/nosotros/listado}" class="btn btn-primary">
+                                    <i class="fas fa-arrow-left"></i> [[#{accion.regresar}]]</a>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-check"></i> [[#{accion.guardar}]]</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><h4>[[#{accion.actualizar}]] [[#{plantilla.nosotros}]]</h4></div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label>[[#{nosotros.tituloSeccion}]]</label>
+                                    <input type="text" class="form-control" name="titulo" th:field="*{titulo}" maxlength="100" required/>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{nosotros.campoParrafo1}]]</label>
+                                    <textarea class="form-control" name="parrafo1" th:field="*{parrafo1}" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{nosotros.campoParrafo2}]]</label>
+                                    <textarea class="form-control" name="parrafo2" th:field="*{parrafo2}" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{plantilla.mision}]]</label>
+                                    <textarea class="form-control" name="mision" th:field="*{mision}" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{plantilla.vision}]]</label>
+                                    <textarea class="form-control" name="vision" th:field="*{vision}" rows="2"></textarea>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" name="activo" th:field="*{activo}"/>
+                                    <label class="form-check-label">[[#{nosotros.activo}]]</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{nosotros.imagen}]]</label>
+                                    <input class="form-control" type="file" name="fotoFile" onchange="mostrarImagen(this);" accept="image/*"/>
+                                    <img id="blah" th:src="${nosotros.rutaImagen}" alt="imagen" height="120" class="mt-2 rounded"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- fragmento 4: confirmar eliminación -->
+        <section th:fragment="confirmarEliminar">
+            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <form th:action="@{/nosotros/eliminar}" method="post">
+                            <input type="hidden" name="idNosotros" id="modalId"/>
+                            <div class="modal-header bg-warning text-white">
+                                <h5 class="modal-title" id="modalLabel">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> [[#{accion.confirmar}]]
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>[[#{accion.confirmar.texto1}]] <span id="modalDescripcion"></span>?</p>
+                                <h6>[[#{accion.confirmar.texto2}]]</h6>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash"></i> [[#{accion.eliminar}]]
+                                </button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="fa-solid fa-xmark"></i> [[#{accion.cerrar}]]
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
