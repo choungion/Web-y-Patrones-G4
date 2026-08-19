@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <!-- fragmento 1: Filtrar mensualidades por estudiante y estado -->
+        <section th:fragment="filtros">
+            <div class="card mb-3">
+                <div class="card-body">
+
+                    <form th:action="@{/mensualidad/listado}"
+                          method="get"
+                          class="row g-3">
+
+                        <div class="col-md-5">
+                            <label class="form-label">
+                                Estudiante
+                            </label>
+
+                            <select name="idEstudiante" class="form-select">
+
+                                <option value="">
+                                    Todos los estudiantes
+                                </option>
+
+                                <option th:each="e : ${estudiantes}"
+                                        th:value="${e.idEstudiante}"
+                                        th:text="${e.nombre + ' ' + e.apellido}">
+                                </option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">
+                                Estado
+                            </label>
+
+                            <select name="estado" class="form-select">
+
+                                <option value="">
+                                    Todos
+                                </option>
+
+                                <option th:each="e : ${T(com.taru.domain.Mensualidad.EstadoMensualidad).values()}"
+                                        th:value="${e}"
+                                        th:text="${e}">
+                                </option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 d-flex align-items-end">
+
+                            <button type="submit"
+                                    class="btn btn-primary me-2">
+                                <i class="fa-solid fa-filter"></i>
+                                Filtrar
+                            </button>
+
+                            <a th:href="@{/mensualidad/listado}"
+                               class="btn btn-secondary">
+                                Limpiar
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="agregarPagoModal" tabindex="-1"
+                 aria-labelledby="agregarPagoLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h1 class="modal-title fs-5" id="agregarPagoLabel">
+                                <i class="fa-solid fa-user-graduate"></i> [[#{pago.agregar}]]</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form th:action="@{/pago/guardar}" 
+                              class="was-validated" enctype="multipart/form-data" method="post">
+                            <input type="hidden" name="idMensualidad" id="idMensualidad">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label"> [[#{pago.estudiante}]] </label>
+                                            <input type="text" name="estudiantePago" id="estudiantePago" class="form-control"
+                                                   readonly>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label"> [[#{pago.periodo}]] </label>
+                                            <input type="text" name="periodoPago" id="periodoPago" class="form-control"
+                                                   readonly>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label"> [[#{pago.monto}]] </label>
+                                            <input type="number"name="monto" id="montoPago"
+                                                   class="form-control" step="0.01"
+                                                   readonly required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label"> [[#{pago.fecha}]] </label>
+                                            <input type="date"name="fechaPago" id="fechaPago" class="form-control"
+                                                   required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label>[[#{pago.metodoPago}]]</label>
+                                            <select type="text" name="metodoPago" class="form-select" maxlength="100" required>
+                                                <option value="SINPE">[[#{pago.sinpe}]]</option>
+                                                <option value="Transferencia">[[#{pago.transferencia}]]</option>
+                                                <option value="Efectivo">[[#{pago.efectivo}]]</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10 mb-2">
+                                            <label>[[#{pago.observaciones}]]</label>
+                                            <textarea name="observaciones" class="form-control" maxlength="255" 
+                                                      rows="2"></textarea>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <label>[[#{pago.recibo}]]</label>
+                                        <input type="file" name="reciboFile" onchange="mostrarImagen(this);" 
+                                               class="form-control" accept="image/*" required/>
+                                        <img id="blah" src="#" alt="recibo" height="120" class="mt-2 rounded"/>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        <i class="fa-solid fa-xmark"></i> [[#{accion.cerrar}]]</button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa-solid fa-floppy-disk"></i> [[#{accion.registrar}]]</button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- fragmento 2: Listado de mensualidades-->
+        <section th:fragment="listado" class="p-3">
+            <div class="row p-3">
+                <div class="col-md-9">
+                    <div class="card p-2">
+                        <div class="card-header"><h4>[[#{mensualidad.listado}]]</h4></div>
+                        <div class="card-body">
+                            <div th:if="${mensualidades != null and !mensualidades.empty}">
+                                <table class="table table-striped table-hover">
+                                    <thead><tr><th>#</th>
+                                            <th>[[#{mensualidad.Estudiante}]]</th>
+                                            <th>[[#{mensualidad.periodo}]]</th>      
+                                            <th>[[#{mensualidad.fechaVencimiento}]]</th>
+                                            <th>[[#{mensualidad.monto}]]</th>
+                                            <th>[[#{mensualidad.estado}]]</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="m : ${mensualidades}">
+                                            <td>ST-[[${m.idMensualidad}]]</td>
+                                            <td>
+                                                [[${m.inscripcion.estudiante.nombre}]]
+                                                [[${m.inscripcion.estudiante.apellido}]]
+                                            </td>
+                                            <td>[[${m.periodo}]]</td>
+                                            <td th:text="${#temporals.format(m.fechaVencimiento, 'dd-MM-yyyy')}">
+                                                [[${m.fechaVencimiento}]]</td>
+                                            <td>[[${m.monto}]]</td>
+                                            <td>
+                                                <span th:if="${m.estado.name() == 'Pagada'}" class="badge bg-success">[[#{mensualidad.Pagada}]]</span>
+                                                <span th:if="${m.estado.name() == 'Pendiente'}" class="badge bg-warning text-dark">[[#{mensualidad.Pendiente}]]</span>
+                                                <span th:if="${m.estado.name() == 'Vencida'}" class="badge bg-secondary">[[#{mensualidad.Vencida}]]</span>
+                                            </td>
+                                            <td>
+                                                <button th:if="${m.estado.name() != 'Pagada'}"
+                                                        type="button"
+                                                        class="btn btn-primary btn-sm"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#agregarPagoModal"
+                                                        th:data-id="${m.idMensualidad}"
+                                                        th:data-estudiante="${m.inscripcion.estudiante.nombre + ' ' + m.inscripcion.estudiante.apellido}"
+                                                        th:data-periodo="${m.periodo}"
+                                                        th:data-monto="${m.monto}"
+                                                        onclick="cargarDatosPago(this)">
+                                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                                    [[#{mensualidad.Registrar}]]
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-center p-2" th:if="${mensualidades == null or mensualidades.empty}">
+                                <span>[[#{lista.vacia}]]</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center bg-success text-white mb-3">
+                        <div class="card-body"><h5>[[#{mensualidad.pagadas}]]</h5>
+                            <h4 class="fs-2"><i class="fas fa-users"></i> [[${pagadas}]]</h4>
+                        </div></div>
+                    <div class="card text-center bg-taru-naranja mb-3">
+                        <div class="card-body"><h5>[[#{mensualidad.pendientes}]]</h5>
+                            <h4 class="fs-2">[[${pendientes}]]</h4>
+                        </div></div>
+                    <div class="card text-center bg-secondary text-white mb-3">
+                        <div class="card-body"><h5>[[#{mensualidad.vencidas}]]</h5>
+                            <h4 class="fs-2">[[${vencidas}]]</h4>
+                        </div></div>
+                </div>
+            </div>
+        </section>
+
+    </body>
+</html>
+

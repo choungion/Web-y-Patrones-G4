@@ -58,3 +58,15 @@ document.addEventListener('DOMContentLoaded', function () {
 setTimeout(() => {
     document.querySelectorAll('.toast').forEach(t => t.classList.remove('show'));
 }, 4000);
+
+//para poner datos de la tabla de mensualidades en el modal de pago
+function cargarDatosPago(boton) {
+    const id = boton.getAttribute("data-id");
+    const estudiante = boton.getAttribute("data-estudiante");
+    const periodo = boton.getAttribute("data-periodo");
+    const monto = boton.getAttribute("data-monto");
+    document.getElementById("idMensualidad").value = id;
+    document.getElementById("estudiantePago").value = estudiante;
+    document.getElementById("periodoPago").value = periodo;
+    document.getElementById("montoPago").value = monto;
+}
