@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <body>
+        <!-- fragmento 1: agregar imagen en ventana modal -->
+        <section th:fragment="agregar">
+            <div class="row py-4 mb-2 bg-light">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary"
+                            data-bs-toggle="modal" data-bs-target="#agregarGaleriaModal">
+                        <i class="fa-solid fa-plus"></i> [[#{galeria.agregar}]]</button>
+                </div>
+            </div>
+            <div class="modal fade" id="agregarGaleriaModal" tabindex="-1" aria-labelledby="agregarGaleriaLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header text-white" style="background-color:#1f4d3a;">
+                            <h1 class="modal-title fs-5" id="agregarGaleriaLabel">
+                                <i class="fa-solid fa-images"></i> [[#{galeria.agregar}]]</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form th:action="@{/galeria/guardar}" th:object="${galeria}" class="was-validated"
+                              enctype="multipart/form-data" method="post">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label>[[#{galeria.tituloImagen}]]</label>
+                                    <input type="text" class="form-control" name="titulo" th:field="*{titulo}" maxlength="100" required/>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{galeria.descripcion}]]</label>
+                                    <textarea class="form-control" name="descripcion" th:field="*{descripcion}" maxlength="255" rows="2"></textarea>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" name="activo" th:field="*{activo}"/>
+                                    <label class="form-check-label">[[#{galeria.activo}]]</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{galeria.imagen}]]</label>
+                                    <input class="form-control" type="file" name="fotoFile" onchange="mostrarImagen(this);" accept="image/*" required/>
+                                    <img id="blah" src="#" alt="imagen" height="150" class="mt-2 rounded"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="fa-solid fa-xmark"></i> [[#{accion.cerrar}]]</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-floppy-disk"></i> [[#{accion.guardar}]]</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- fragmento 2: listado de imágenes -->
+        <section th:fragment="listado" class="p-3">
+            <div class="d-flex justify-content-center">
+                <div class="w-75">
+                    <div class="card p-2">
+                        <div class="card-header" style="background-color:#1f4d3a; color:white;"><h4>[[#{galeria.listado}]]</h4></div>
+                        <div class="card-body">
+                            <div th:if="${imagenes != null and !imagenes.empty}">
+                                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+                                    <div class="col" th:each="img : ${imagenes}">
+                                        <div class="card h-100 shadow border-0">
+                                            <img th:src="${img.rutaImagen}" class="card-img-top" style="height:180px; object-fit:cover;" alt="Galería"/>
+                                            <div class="card-body">
+                                                <h6 class="card-title">[[${img.titulo}]]</h6>
+                                                <p class="card-text text-muted small">[[${img.descripcion}]]</p>
+                                                <span th:if="${img.activo}" class="badge bg-success">[[#{curso.activo}]]</span>
+                                                <span th:unless="${img.activo}" class="badge bg-secondary">[[#{curso.inactivo}]]</span>
+                                            </div>
+                                            <div class="card-footer text-center d-flex justify-content-center gap-2">
+                                                <button type="button" class="btn btn-outline-danger btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                                        th:data-bs-id="${img.idGaleria}"
+                                                        th:data-bs-descripcion="${img.titulo}">
+                                                    <i class="fa-solid fa-trash"></i> [[#{accion.eliminar}]]
+                                                </button>
+                                                <a th:href="@{'/galeria/modifica/'+${img.idGaleria}}" class="btn btn-outline-warning btn-sm">
+                                                    <i class="fas fa-solid fa-pen"></i> [[#{accion.actualizar}]]
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center p-2" th:if="${imagenes == null or imagenes.empty}">
+                                <span>[[#{lista.vacia}]]</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- fragmento 3: editar imagen -->
+        <section th:fragment="editar">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <form method="POST" th:action="@{/galeria/guardar}" th:object="${galeria}" class="was-validated" enctype="multipart/form-data">
+                        <input type="hidden" name="idGaleria" th:field="*{idGaleria}"/>
+                        <input type="hidden" th:field="*{rutaImagen}"/>
+                        <div class="card">
+                            <div class="card-header"><h4>[[#{accion.actualizar}]] [[#{plantilla.galeria}]]</h4></div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label>[[#{galeria.tituloImagen}]]</label>
+                                    <input type="text" class="form-control" name="titulo" th:field="*{titulo}" maxlength="100" required/>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{galeria.descripcion}]]</label>
+                                    <textarea class="form-control" name="descripcion" th:field="*{descripcion}" maxlength="255" rows="2"></textarea>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" name="activo" th:field="*{activo}"/>
+                                    <label class="form-check-label">[[#{galeria.activo}]]</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label>[[#{galeria.imagen}]]</label>
+                                    <input class="form-control" type="file" name="fotoFile" onchange="mostrarImagen(this);" accept="image/*"/>
+                                    <img id="blah" th:src="${galeria.rutaImagen}" alt="imagen" height="150" class="mt-2 rounded"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row py-4 mb-4 bg-light">
+                            <div class="col-md-4 d-grid">
+                                <a th:href="@{/galeria/listado}" class="btn btn-primary">
+                                    <i class="fas fa-arrow-left"></i> [[#{accion.regresar}]]</a>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-check"></i> [[#{accion.guardar}]]</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- fragmento 4: confirmar eliminación -->
+        <section th:fragment="confirmarEliminar">
+            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <form th:action="@{/galeria/eliminar}" method="post">
+                            <input type="hidden" name="idGaleria" id="modalId"/>
+                            <div class="modal-header bg-warning text-white">
+                                <h5 class="modal-title" id="modalLabel">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> [[#{accion.confirmar}]]
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>[[#{accion.confirmar.texto1}]] <span id="modalDescripcion"></span>?</p>
+                                <h6>[[#{accion.confirmar.texto2}]]</h6>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash"></i> [[#{accion.eliminar}]]
+                                </button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="fa-solid fa-xmark"></i> [[#{accion.cerrar}]]
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

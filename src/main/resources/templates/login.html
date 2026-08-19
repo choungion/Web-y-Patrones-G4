@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"></header>
+
+        <div class="row my-5">
+            <div class="col-md-4 offset-md-4">
+                <div class="card shadow">
+                    <div class="card-header text-white text-center" style="background-color:#1f4d3a;">
+                        <h2><i class="fa-solid fa-right-to-bracket"></i> [[#{login.login}]]</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" th:action="@{/login}">
+                            <div class="row my-3">
+                                <label for="username" class="col-md-1 my-auto"><i class="fas fa-user"></i></label>
+                                <div class="col-md-11 my-auto">
+                                    <input class="form-control" id="username" type="text" name="username" th:placeholder="#{login.username}" required/>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <label for="password" class="col-md-1 my-auto"><i class="fas fa-key"></i></label>
+                                <div class="col-md-11 my-auto">
+                                    <input class="form-control" id="password" type="password" name="password" th:placeholder="#{login.password}" required/>
+                                </div>
+                            </div>
+                            <div class="d-grid mt-4">
+                                <button class="btn text-white" style="background-color:#C58B12;" type="submit">
+                                    <i class="fas fa-sign-in-alt"></i> [[#{login.login}]]</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div th:if="${param.error != null}" class="alert alert-danger mt-3 text-center" role="alert">
+                    [[#{error.login}]]
+                </div>
+                <div th:if="${param.logout != null}" class="alert alert-success mt-3 text-center" role="alert">
+                    [[#{login.logoutOk}]]
+                </div>
+            </div>
+        </div>
+
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>

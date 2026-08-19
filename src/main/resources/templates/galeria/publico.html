@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"></header>
+
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-2" style="color:#1f4d3a;">[[#{galeria.titulo}]]</h2>
+                <p class="text-center text-muted mb-4">[[#{galeria.subtitulo}]]</p>
+
+                <div th:if="${imagenes != null and !imagenes.empty}" class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+                    <div class="col" th:each="img : ${imagenes}">
+                        <div class="card h-100 shadow border-0">
+                            <img th:src="${img.rutaImagen}" class="card-img-top" style="height:260px; object-fit:cover;" alt="Galería"/>
+                            <div class="card-body">
+                                <h5 class="card-title">[[${img.titulo}]]</h5>
+                                <p class="card-text text-muted" th:if="${img.descripcion != null and !img.descripcion.isEmpty()}">
+                                    [[${img.descripcion}]]</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center p-4" th:if="${imagenes == null or imagenes.empty}">
+                    <span>[[#{lista.vacia}]]</span>
+                </div>
+            </div>
+        </section>
+
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>
