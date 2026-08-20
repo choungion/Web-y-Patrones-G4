@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{general/fragmentos :: head}">
+    <title>Nuevo comunicado</title>
+</head>
+
+<body>
+
+<div th:replace="~{general/fragmentos :: header}"></div>
+
+<div class="container mt-4">
+
+    <div class="card">
+
+        <div class="card-header bg-success text-white">
+            <h3>Enviar comunicado</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form th:action="@{/comunicado/guardar}"
+                  th:object="${comunicado}"
+                  method="post">
+
+                <div class="mb-3">
+                    <label class="form-label">Destinatario</label>
+
+                    <select class="form-select"
+                            th:field="*{estudiante.idEstudiante}"
+                            required>
+
+                        <option value="">
+                            Seleccione un estudiante
+                        </option>
+
+                        <option th:each="estudiante : ${estudiantes}"
+                                th:value="${estudiante.idEstudiante}"
+                                th:text="${estudiante.nombre + ' ' + estudiante.apellido}">
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Título</label>
+
+                    <input type="text"
+                           class="form-control"
+                           th:field="*{titulo}"
+                           maxlength="150"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Mensaje</label>
+
+                    <textarea class="form-control"
+                              th:field="*{mensaje}"
+                              rows="5"
+                              maxlength="1000"
+                              required>
+                    </textarea>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-success">
+                    Enviar comunicado
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="~{general/fragmentos :: footer}"></div>
+
+</body>
+</html>

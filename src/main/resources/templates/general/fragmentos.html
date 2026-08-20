@@ -31,29 +31,49 @@
                     <li class="nav-item px-2"><a class="nav-link" th:href="@{/#nosotros}">[[#{plantilla.nosotros}]]</a></li>
 
                     <!-- Portal del estudiante -->
-                    <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ESTUDIANTE')">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                            [[#{plantilla.miPortal}]]</a>
-                        <ul class="dropdown-menu">
-                             th:href="@{/asistencia/historial/{id}(id=${session.usuario.idEstudiante})}">
-                             <i class="fa-solid fa-clipboard-check"></i>
-                             Mi Asistencia
-                        </a>
-                         
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasRole('ROLE_ESTUDIANTE')">
 
-                        <li> th:if="${session.usuarioIdEstudiante != null}">
-                            <a class="dropdown-item" th:href="@{/ausencia/nuevo}">
-                                <i class="fa-solid fa-calendar-xmark"></i>
-                                Notificar ausencia
-                            </a>
-                        </li>
+                        <a class="nav-link dropdown-toggle"
+                           data-bs-toggle="dropdown"
+                           href="#"
+                           role="button"
+                           aria-expanded="false">
+                            [[#{plantilla.miPortal}]]
+                        </a>
+
+                        <ul class="dropdown-menu">
+
                             <li th:if="${session.usuarioIdEstudiante != null}">
-                                <a class="dropdown-item" th:href="@{/asistencia/historial/{id}(id=${session.usuarioIdEstudiante})}">
-                                    <i class="fa-solid fa-clipboard-check"></i> [[#{plantilla.miAsistencia}]]</a>
+                                <a class="dropdown-item"
+                                   th:href="@{/asistencia/historial/{id}(id=${session.usuarioIdEstudiante})}">
+                                    <i class="fa-solid fa-clipboard-check"></i>
+                                    Mi Asistencia
+                                </a>
                             </li>
+                            <li th:if="${session.usuarioIdEstudiante != null}">
+    <a class="dropdown-item"
+       th:href="@{/comunicado/estudiante/{id}(id=${session.usuarioIdEstudiante})}">
+        <i class="fa-solid fa-bullhorn"></i>
+        Comunicados
+    </a>
+</li>
+
+                            <li th:if="${session.usuarioIdEstudiante != null}">
+                                <a class="dropdown-item"
+                                   th:href="@{/ausencia/nuevo}">
+                                    <i class="fa-solid fa-calendar-xmark"></i>
+                                    Notificar ausencia
+                                </a>
+                            </li>
+                            
+
                             <li th:if="${session.usuarioIdEstudiante == null}">
-                                <span class="dropdown-item-text small text-muted">[[#{plantilla.sinEstudianteAsociado}]]</span>
+                                <span class="dropdown-item-text small text-muted">
+                                    [[#{plantilla.sinEstudianteAsociado}]]
+                                </span>
                             </li>
+
                         </ul>
                     </li>
 
@@ -62,9 +82,17 @@
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                             [[#{plantilla.administracion}]]</a>
                         <ul class="dropdown-menu">
+
                             <li><a class="dropdown-item" th:href="@{/estudiante/listado}"><i class="fa-solid fa-user-graduate"></i> [[#{plantilla.estudiantes}]]</a></li>
                             <li><a class="dropdown-item" th:href="@{/cursos/listado}"><i class="fa-solid fa-book"></i> [[#{plantilla.cursos}]]</a></li>
                             <li><a class="dropdown-item" th:href="@{/asistencia/listado}"><i class="fa-solid fa-clipboard-check"></i> [[#{plantilla.asistencia}]]</a></li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/ausencia/listado}">
+                                    <i class="fa-solid fa-calendar-xmark"></i>
+                                    Ausencias notificadas
+                                </a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/comunicado/listado}"><i class="fa-solid fa-bullhorn"></i> Comunicados</a></li>
                             <li><a class="dropdown-item" th:href="@{/mensualidad/listado}"><i class="fa-solid fa-credit-card"></i> [[#{plantilla.mensualidades}]]</a></li>
                             <li><a class="dropdown-item" th:href="@{/mensualidad/listado}"><i class="fa-solid fa-envelope"></i> [[#{plantilla.Cobros}]]</a></li>
                             <li><a class="dropdown-item" th:href="@{/inscripcion/listado}"><i class="fa-solid fa-clipboard-list"></i> [[#{inscripcion.titulo}]]</a></li>

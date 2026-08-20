@@ -60,7 +60,8 @@
             </table>
 
             <a th:href="@{/ausencia/nuevo}"
-               class="btn btn-success">
+   class="btn btn-success"
+   sec:authorize="hasRole('ROLE_ESTUDIANTE')">
                 Notificar nueva ausencia
             </a>
 

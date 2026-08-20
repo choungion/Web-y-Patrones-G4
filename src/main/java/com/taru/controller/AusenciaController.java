@@ -58,4 +58,17 @@ public class AusenciaController {
 
         return "ausencia/historial";
     }
+    
+    @GetMapping("/listado")
+public String listado(Model model) {
+
+    model.addAttribute(
+            "ausencias",
+            ausenciaService.getAusencias()
+    );
+
+    return "ausencia/historial";
+}
+        
+    
 }
