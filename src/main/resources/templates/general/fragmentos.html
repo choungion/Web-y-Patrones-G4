@@ -35,6 +35,18 @@
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                             [[#{plantilla.miPortal}]]</a>
                         <ul class="dropdown-menu">
+                             th:href="@{/asistencia/historial/{id}(id=${session.usuario.idEstudiante})}">
+                             <i class="fa-solid fa-clipboard-check"></i>
+                             Mi Asistencia
+                        </a>
+                         
+
+                        <li> th:if="${session.usuarioIdEstudiante != null}">
+                            <a class="dropdown-item" th:href="@{/ausencia/nuevo}">
+                                <i class="fa-solid fa-calendar-xmark"></i>
+                                Notificar ausencia
+                            </a>
+                        </li>
                             <li th:if="${session.usuarioIdEstudiante != null}">
                                 <a class="dropdown-item" th:href="@{/asistencia/historial/{id}(id=${session.usuarioIdEstudiante})}">
                                     <i class="fa-solid fa-clipboard-check"></i> [[#{plantilla.miAsistencia}]]</a>

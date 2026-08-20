@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{general/fragmentos :: head}">
+    <title>Notificar ausencia</title>
+</head>
+
+<body>
+
+<header th:replace="~{general/fragmentos :: header}"></header>
+
+<div class="container mt-4">
+
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h3>Notificar ausencia</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form th:action="@{/ausencia/guardar}"
+                  th:object="${ausencia}"
+                  method="post">
+
+                <div class="mb-3">
+                    <label class="form-label">Estudiante</label>
+
+                    <select class="form-select"
+                            th:field="*{estudiante}"
+                            required>
+
+                        <option value="">Seleccione un estudiante</option>
+
+                        <option th:each="estudiante : ${estudiantes}"
+                                th:value="${estudiante.idEstudiante}"
+                                th:text="${estudiante.nombre + ' ' + estudiante.apellido}">
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Curso</label>
+
+                    <select class="form-select"
+                            th:field="*{curso}"
+                            required>
+
+                        <option value="">Seleccione un curso</option>
+
+                        <option th:each="curso : ${cursos}"
+                                th:value="${curso.idCurso}"
+                                th:text="${curso.nombre}">
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Fecha de la ausencia</label>
+
+                    <input type="date"
+                           class="form-control"
+                           th:field="*{fechaAusencia}"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Motivo de la ausencia</label>
+
+                    <textarea class="form-control"
+                              th:field="*{motivo}"
+                              rows="4"
+                              placeholder="Indique el motivo de la ausencia"
+                              required>
+                    </textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Notificar ausencia
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="~{general/fragmentos :: footer}"></footer>
+
+</body>
+</html>

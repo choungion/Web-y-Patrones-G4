@@ -86,6 +86,23 @@ CREATE TABLE asistencia (
     FOREIGN KEY (id_curso) REFERENCES curso(id_curso)
 )   ENGINE = InnoDB;
 
+CREATE TABLE ausencia (
+    id_ausencia INT NOT NULL AUTO_INCREMENT,
+    fecha_ausencia DATE NOT NULL,
+    motivo VARCHAR(255),
+    fecha_registro DATETIME NOT NULL,
+    id_estudiante INT NOT NULL,
+    id_curso INT NOT NULL,
+
+    PRIMARY KEY (id_ausencia),
+
+    FOREIGN KEY (id_estudiante)
+        REFERENCES estudiante(id_estudiante),
+
+    FOREIGN KEY (id_curso)
+        REFERENCES curso(id_curso)
+) ENGINE = InnoDB;
+
 -- Tabla de mensualidades
 CREATE TABLE taru.mensualidad (
     id_mensualidad INT AUTO_INCREMENT PRIMARY KEY,
