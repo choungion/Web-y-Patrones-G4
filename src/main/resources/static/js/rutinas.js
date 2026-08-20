@@ -70,3 +70,36 @@ function cargarDatosPago(boton) {
     document.getElementById("periodoPago").value = periodo;
     document.getElementById("montoPago").value = monto;
 }
+
+function cargarDetallePago(boton) {
+
+    const fecha = boton.getAttribute("data-fecha");
+    const monto = boton.getAttribute("data-monto");
+    const metodo = boton.getAttribute("data-metodo");
+    const observaciones = boton.getAttribute("data-observaciones");
+    const recibo = boton.getAttribute("data-recibo");
+
+    document.getElementById("detalleFecha").textContent =
+            fecha || "No disponible";
+
+    document.getElementById("detalleMonto").textContent =
+            monto ? "₡" + monto : "No disponible";
+
+    document.getElementById("detalleMetodo").textContent =
+            metodo || "No disponible";
+
+    document.getElementById("detalleObservaciones").textContent =
+            observaciones || "Sin observaciones";
+
+    const imagenRecibo = document.getElementById("imagenRecibo");
+    const mensajeRecibo = document.getElementById("mensajeRecibo");
+
+    if (recibo) {
+        imagenRecibo.src = recibo;
+        imagenRecibo.style.display = "block";
+        mensajeRecibo.style.display = "none";
+    } else {
+        imagenRecibo.style.display = "none";
+        mensajeRecibo.style.display = "block";
+    }
+}

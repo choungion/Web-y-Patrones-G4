@@ -1,5 +1,6 @@
 package com.taru.service;
 
+import com.taru.domain.Cobro;
 import com.taru.domain.Estudiante;
 import com.taru.domain.Inscripcion;
 import com.taru.domain.Mensualidad;
@@ -20,6 +21,7 @@ public class MensualidadService {
     private final InscripcionRepository inscripcionRepository;
     private final MensualidadRepository mensualidadRepository;
     private final CorreoMensualidadService correoMensualidadService;
+    private final CobroService cobroService;
 
     /**
      * Método principal que ejecutará el Scheduler.
@@ -212,12 +214,11 @@ public class MensualidadService {
                 </body>
             </html>
             """.formatted(
-                    estudiante.getNombre(),
-                    estudiante.getApellido(),
-                    mensualidad.getPeriodo(),
-                    mensualidad.getMonto()
-            );
-
+                estudiante.getNombre(),
+                estudiante.getApellido(),
+                mensualidad.getPeriodo(),
+                mensualidad.getMonto()
+        );
 
         try {
             correoMensualidadService.enviarCorreoHtml(
@@ -225,13 +226,29 @@ public class MensualidadService {
                     asunto,
                     contenido
             );
+
+            Cobro cobro = new Cobro();
+
+            cobro.setMensualidad(mensualidad);
+            cobro.setDestinatario(correo);
+            cobro.setEstado("ENVIADO");
+
+            cobroService.registrar(cobro);
+
         } catch (MessagingException e) {
             System.err.println(
                     "No se pudo enviar el correo de mensualidad: "
                     + e.getMessage()
             );
+            // Registrar el intento fallido
+            Cobro cobro = new Cobro();
+
+            cobro.setMensualidad(mensualidad);
+            cobro.setDestinatario(correo);
+            cobro.setEstado("ERROR");
+
+            cobroService.registrar(cobro);
         }
     }
-    
 
 }
