@@ -63,6 +63,13 @@
 
                         </div>
 
+                        <div class="text-end mt-2">
+                            <a th:href="@{/cobro/listado}"
+                               class="btn btn-outline-secondary btn-sm">
+                                <i class="fa-solid fa-envelope"></i>
+                                Historial de notificaciones
+                            </a>
+
                     </form>
 
                 </div>
@@ -176,6 +183,23 @@
                                                 <span th:if="${m.estado.name() == 'Vencida'}" class="badge bg-secondary">[[#{mensualidad.Vencida}]]</span>
                                             </td>
                                             <td>
+                                                <button th:if="${m.estado.name() == 'Pagada'}"
+                                                        type="button"
+                                                        class="btn btn-sm"
+                                                        style="background-color: var(--taru-crema); color: var(--taru-verde); border: 0px solid var(--taru-verde);"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#detallePagoModal"
+                                                        th:data-fecha="${pagos[m.idMensualidad]?.fechaPago}"
+                                                        th:data-monto="${pagos[m.idMensualidad]?.monto}"
+                                                        th:data-metodo="${pagos[m.idMensualidad]?.metodoPago}"
+                                                        th:data-observaciones="${pagos[m.idMensualidad]?.observaciones}"
+                                                        th:data-recibo="${pagos[m.idMensualidad]?.rutaRecibo}"
+                                                        onclick="cargarDetallePago(this)">
+
+                                                    <i class="fa-solid fa-eye"></i>
+                                                    [[#{mensualidad.detalle}]]
+
+                                                </button>
                                                 <button th:if="${m.estado.name() != 'Pagada'}"
                                                         type="button"
                                                         class="btn btn-primary btn-sm"
@@ -212,6 +236,94 @@
                         <div class="card-body"><h5>[[#{mensualidad.vencidas}]]</h5>
                             <h4 class="fs-2">[[${vencidas}]]</h4>
                         </div></div>
+                </div>
+
+            </div>
+            <!-- Modal Detalle de Mensualidades pagadas-->
+            <div class="modal fade" id="detallePagoModal"
+                 tabindex="-1"
+                 aria-labelledby="detallePagoModalLabel"
+                 aria-hidden="true">
+
+                <div class="modal-dialog modal-dialog-centered">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header"
+                             style="background-color: var(--taru-crema);">
+
+                            <h5 class="modal-title"
+                                id="detallePagoModalLabel">
+
+                                <i class="fa-solid fa-receipt"></i>
+                                Detalle del pago
+
+                            </h5>
+
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Cerrar">
+                            </button>
+
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div class="mb-3">
+                                <strong>Fecha de pago:</strong>
+                                <span id="detalleFecha"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <strong>Monto:</strong>
+                                <span id="detalleMonto"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <strong>Método de pago:</strong>
+                                <span id="detalleMetodo"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <strong>Observaciones:</strong>
+                                <span id="detalleObservaciones"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <strong>Comprobante:</strong>
+
+                            <div class="text-center mt-2">
+
+                                <img id="imagenRecibo"
+                                     src=""
+                                     alt="Comprobante de pago"
+                                     class="img-fluid rounded"
+                                     style="max-height: 400px; display: none;">
+
+                                    <p id="mensajeRecibo"
+                                       class="text-muted"
+                                       style="display: none;">
+                                        No hay comprobante registrado.
+                                    </p>
+
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <button type="button"
+                                    class="btn btn-secondary"
+                                    data-bs-dismiss="modal">
+                                Cerrar
+                            </button>
+
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
         </section>
