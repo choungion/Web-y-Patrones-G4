@@ -104,7 +104,7 @@ CREATE TABLE ausencia (
 ) ENGINE = InnoDB;
 
 -- Tabla de mensualidades
-CREATE TABLE taru.mensualidad (
+CREATE TABLE mensualidad (
     id_mensualidad INT AUTO_INCREMENT PRIMARY KEY,
     id_inscripcion INT NOT NULL,
     periodo CHAR(7) NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE taru.mensualidad (
 ) ENGINE=InnoDB;
 
 -- Tabla de pago de mensualidades
-CREATE TABLE taru.pago (
+CREATE TABLE pago (
     id_pago INT AUTO_INCREMENT PRIMARY KEY,
     id_mensualidad INT NOT NULL,
     fecha_pago DATE NOT NULL,
@@ -137,6 +137,17 @@ CREATE TABLE taru.pago (
         REFERENCES mensualidad(id_mensualidad)
 ) ENGINE=InnoDB;
 
+CREATE TABLE cobro (
+    id_cobro INT AUTO_INCREMENT PRIMARY KEY,
+    id_mensualidad INT NOT NULL,
+    destinatario VARCHAR(100) NOT NULL,
+    fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    estado VARCHAR(20) NOT NULL,
+
+    CONSTRAINT fk_cobro_mensualidad
+        FOREIGN KEY (id_mensualidad)
+        REFERENCES mensualidad(id_mensualidad)
+) ENGINE=InnoDB;
 
 insert into encargado (nombre, telefono, correo) values
 ('Laura Ramirez', '8123-4567', 'laura.ramirez@correo.com'),

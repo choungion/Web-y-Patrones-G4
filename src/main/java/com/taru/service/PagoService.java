@@ -7,6 +7,7 @@ import com.taru.repository.PagoRepository;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,6 @@ public class PagoService {
     private final PagoRepository pagoRepository;
     private final MensualidadRepository mensualidadRepository;
     private final FirebaseStorageService firebaseStorageService;
-
 
     @Transactional
     public void guardar(Pago pago) {
@@ -35,10 +35,8 @@ public class PagoService {
     public void enviarRecordatorios() {
 
     }
-    
-       
-     //Registra el pago de una mensualidad y cambia su estado a Pagada.
-   
+
+    //Registra el pago de una mensualidad y cambia su estado a Pagada.
     @Transactional
     public void registrarPago(
             Integer idMensualidad,
@@ -50,9 +48,9 @@ public class PagoService {
         // Buscar la mensualidad
         Mensualidad mensualidad = mensualidadRepository
                 .findById(idMensualidad)
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "La mensualidad no existe"));
+                .orElseThrow(()
+                        -> new IllegalArgumentException(
+                        "La mensualidad no existe"));
 
         // Verificar que no exista ya un pago
         if (pagoRepository
@@ -96,6 +94,12 @@ public class PagoService {
         );
 
         mensualidadRepository.save(mensualidad);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Pago> obtenerPagoPorMensualidad(Integer idMensualidad) {
+
+        return pagoRepository.findByMensualidad_IdMensualidad(idMensualidad);
     }
 
 }

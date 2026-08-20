@@ -5,13 +5,19 @@
 package com.taru.controller;
 
 import com.taru.domain.Mensualidad;
+import com.taru.domain.Pago;
 import com.taru.repository.EstudianteRepository;
+import com.taru.repository.PagoRepository;
 import com.taru.service.MensualidadService;
+import com.taru.service.PagoService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +29,8 @@ public class mensualidadController {
 
     private final MensualidadService mensualidadService;
     private final EstudianteRepository estudianteRepository;
+    private final PagoRepository pagoRepository;
+    private final PagoService pagoService;
 
     @GetMapping("/mensualidades/generar")
     public String generarMensualidades() {
@@ -39,6 +47,16 @@ public class mensualidadController {
             Model model) {
         List<Mensualidad> mensualidades
                 = mensualidadService.obtenerMensualidades(estado, idEstudiante);
+        Map<Integer, Pago> pagos = new HashMap<>();
+        for (Mensualidad mensualidad : mensualidades) {
+            pagoService
+                    .obtenerPagoPorMensualidad(mensualidad.getIdMensualidad())
+                    .ifPresent(pago
+                            -> pagos.put(mensualidad.getIdMensualidad(), pago)
+                    );
+        }
+
+        model.addAttribute("pagos", pagos);
         model.addAttribute(
                 "estudiantes",
                 estudianteRepository.findAll()
@@ -67,5 +85,21 @@ public class mensualidadController {
         return "/mensualidad/listado";
     }
 
- 
+    @GetMapping("/procesar")
+    public String procesarMensualidades() {
+
+        mensualidadService.procesarMensualidades();
+
+        return "Proceso ejecutado";
+    }
+//traer el pago que pertenece a la mensualidad pagada para mostrar los datos
+
+    @GetMapping("/pago/{idMensualidad}")
+    @ResponseBody
+    public Pago obtenerPago(@PathVariable Integer idMensualidad) {
+
+        return pagoRepository
+                .findByMensualidad_IdMensualidad(idMensualidad)
+                .orElse(null);
+    }
 }

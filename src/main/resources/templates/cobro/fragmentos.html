@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <body>
+        <!-- fragmento: listado de registros de cobros -->
+        <section th:fragment="listado" class="p-3">
+            <div class="row p-3">
+
+                <div class="col-md-12">
+
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h4>Historial de cobros enviados</h4>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div th:if="${cobros != null and !cobros.empty}">
+
+                                <table class="table table-striped table-hover">
+
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Estudiante</th>
+                                            <th>Período</th>
+                                            <th>Monto</th>
+                                            <th>Destinatario</th>
+                                            <th>Fecha de envío</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr th:each="c : ${cobros}">
+
+                                            <td>
+                                                COB-[[${c.idCobro}]]
+                                            </td>
+
+                                            <td>
+                                                [[${c.mensualidad.inscripcion.estudiante.nombre}]]
+                                                [[${c.mensualidad.inscripcion.estudiante.apellido}]]
+                                            </td>
+
+                                            <td>
+                                                [[${c.mensualidad.periodo}]]
+                                            </td>
+
+                                            <td>
+                                                ₡[[${c.mensualidad.monto}]]
+                                            </td>
+
+                                            <td>
+                                                [[${c.destinatario}]]
+                                            </td>
+
+                                            <td>
+                                                <span th:text="${#temporals.format(c.fechaEnvio, 'dd-MM-yyyy HH:mm')}">
+                                                </span>
+                                            </td>
+
+                                            <td>
+
+                                                <span th:if="${c.estado == 'ENVIADO'}"
+                                                      class="badge bg-success">
+                                                    Enviado
+                                                </span>
+
+                                                <span th:if="${c.estado == 'ERROR'}"
+                                                      class="badge bg-danger">
+                                                    Error
+                                                </span>
+
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                            <div class="text-center p-3"
+                                 th:if="${cobros == null or cobros.empty}">
+
+                                <span>No hay cobros registrados.</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    </body>
+</html>
