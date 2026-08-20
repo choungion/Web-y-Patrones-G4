@@ -24,7 +24,7 @@ Se debe agregar un wallet de fire base dentro de src/main/resources/firebase y a
 * Css
 
 ## Estado del Proyecto
-Hemos completado el 50% del desarrollo de los requerimientos solicitados por el cliente
+Hemos completado el 100% del desarrollo de los requerimientos solicitados por el cliente
 
 ## Para asegurar la integridad del código y la colaboración eficiente en el proyecto del Centro de Artes Taru, el equipo acuerda seguir las siguientes reglas:
 * Rama main: Es la rama principal y contiene la versión estable y funcional del sistema. No se permite realizar push directo a esta rama.  
