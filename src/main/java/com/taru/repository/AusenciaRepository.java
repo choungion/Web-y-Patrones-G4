@@ -10,6 +10,8 @@ public interface AusenciaRepository extends JpaRepository<Ausencia, Integer> {
 
     List<Ausencia> findAllByOrderByFechaRegistroDesc();
 
+    List<Ausencia> findByEstudiante_IdEstudianteOrderByFechaRegistroDesc(Integer idEstudiante);
+
     void deleteByEstudiante_IdEstudiante(Integer idEstudiante);
 
 }

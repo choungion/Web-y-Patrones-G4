@@ -117,12 +117,15 @@ public class AusenciaController {
     }
 
     @GetMapping("/historial")
-    public String historial(Model model) {
+    public String historial(Model model, HttpSession session) {
 
-        model.addAttribute(
-                "ausencias",
-                ausenciaService.getAusencias()
-        );
+        Estudiante estudianteLogueado = obtenerEstudianteDeSesion(session);
+
+        List<com.taru.domain.Ausencia> ausencias = estudianteLogueado != null
+                ? ausenciaService.getAusenciasPorEstudiante(estudianteLogueado.getIdEstudiante())
+                : ausenciaService.getAusencias();
+
+        model.addAttribute("ausencias", ausencias);
 
         return "ausencia/historial";
     }

@@ -23,6 +23,11 @@ public class AusenciaService {
     }
 
     @Transactional(readOnly = true)
+    public List<Ausencia> getAusenciasPorEstudiante(Integer idEstudiante) {
+        return ausenciaRepository.findByEstudiante_IdEstudianteOrderByFechaRegistroDesc(idEstudiante);
+    }
+
+    @Transactional(readOnly = true)
     public Optional<Ausencia> getAusencia(Integer idAusencia) {
         return ausenciaRepository.findById(idAusencia);
     }
