@@ -42,6 +42,13 @@ public class EncargadoService {
                 return existente.get();
             }
         }
+        if (telefono != null && !telefono.isBlank()) {
+            Optional<Encargado> existentePorTelefono
+                    = encargadoRepository.findByNombreIgnoreCaseAndTelefono(nombre, telefono);
+            if (existentePorTelefono.isPresent()) {
+                return existentePorTelefono.get();
+            }
+        }
         Encargado nuevo = new Encargado();
         nuevo.setNombre(nombre);
         nuevo.setTelefono(telefono);

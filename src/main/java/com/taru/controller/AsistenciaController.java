@@ -63,7 +63,7 @@ public class AsistenciaController {
         model.addAttribute("asistencia", asistencia);
         model.addAttribute(
                 "estudiantes",
-                estudianteService.getEstudiantes(true)
+                estudianteService.getEstudiantesEnCurso()
         );
         model.addAttribute(
                 "cursos",
@@ -83,7 +83,7 @@ public class AsistenciaController {
         if (result.hasErrors()) {
             model.addAttribute(
                     "estudiantes",
-                    estudianteService.getEstudiantes(true)
+                    estudianteService.getEstudiantesEnCurso()
             );
             model.addAttribute(
                     "cursos",
@@ -167,7 +167,7 @@ public class AsistenciaController {
         model.addAttribute("asistencia", asistenciaOpt.get());
         model.addAttribute(
                 "estudiantes",
-                estudianteService.getEstudiantes(true)
+                estudianteService.getEstudiantesEnCurso()
         );
         model.addAttribute(
                 "cursos",

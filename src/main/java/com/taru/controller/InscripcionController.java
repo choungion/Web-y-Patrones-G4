@@ -69,6 +69,8 @@ public class InscripcionController {
         }
         Curso curso = cursoOpt.get();
 
+        estudiante.setIdEstudiante(null);
+
         Encargado encargado = encargadoService.findOrCreate(responsableNombre, responsableTelefono, null);
         estudiante.setEncargado(encargado);
         estudiante.setCurso(curso);

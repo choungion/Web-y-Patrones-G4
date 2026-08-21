@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EncargadoRepository extends JpaRepository<Encargado, Integer> {
     public Optional<Encargado> findByCorreoIgnoreCase(String correo);
+
+    public Optional<Encargado> findByNombreIgnoreCaseAndTelefono(String nombre, String telefono);
 }

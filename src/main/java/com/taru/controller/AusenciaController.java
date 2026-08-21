@@ -33,7 +33,7 @@ public class AusenciaController {
 
         model.addAttribute("ausencia", new Ausencia());
         model.addAttribute("estudiantes",
-                estudianteService.getEstudiantes(true));
+                estudianteService.getEstudiantesEnCurso());
         model.addAttribute("cursos",
                 cursoService.getCursos(true));
 
@@ -58,17 +58,16 @@ public class AusenciaController {
 
         return "ausencia/historial";
     }
-    
+
     @GetMapping("/listado")
-public String listado(Model model) {
+    public String listado(Model model) {
 
-    model.addAttribute(
-            "ausencias",
-            ausenciaService.getAusencias()
-    );
+        model.addAttribute(
+                "ausencias",
+                ausenciaService.getAusencias()
+        );
 
-    return "ausencia/historial";
-}
-        
-    
+        return "ausencia/historial";
+    }
+
 }
