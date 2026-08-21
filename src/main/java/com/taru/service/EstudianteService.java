@@ -1,6 +1,7 @@
 package com.taru.service;
 
 import com.taru.domain.Estudiante;
+import com.taru.domain.Inscripcion;
 import com.taru.repository.AsistenciaRepository;
 import com.taru.repository.AusenciaRepository;
 import com.taru.repository.ComunicadoRepository;
@@ -9,6 +10,7 @@ import com.taru.repository.InscripcionRepository;
 import com.taru.repository.MensualidadRepository;
 import com.taru.repository.UsuarioRepository;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -78,6 +80,19 @@ public class EstudianteService {
                 estudiante.setRutaFoto(ruta);
                 estudianteRepository.save(estudiante);
             } catch (IOException e) {
+            }
+        }
+        if (estudiante.getCurso() != null) {
+            boolean yaInscrito = inscripcionRepository.existsByEstudiante_IdEstudianteAndCurso_IdCurso(
+                    estudiante.getIdEstudiante(), estudiante.getCurso().getIdCurso());
+
+            if (!yaInscrito) {
+                Inscripcion inscripcion = new Inscripcion();
+                inscripcion.setEstudiante(estudiante);
+                inscripcion.setCurso(estudiante.getCurso());
+                inscripcion.setEstado("Confirmada");
+                inscripcion.setFechaInscripcion(LocalDate.now());
+                inscripcionRepository.save(inscripcion);
             }
         }
     }

@@ -11,6 +11,8 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Intege
 
     List<Inscripcion> findByEstudiante_IdEstudianteAndEstado(Integer idEstudiante, String estado);
 
+    boolean existsByEstudiante_IdEstudianteAndCurso_IdCurso(Integer idEstudiante, Integer idCurso);
+
     void deleteByEstudiante_IdEstudiante(Integer idEstudiante);
     
 }
