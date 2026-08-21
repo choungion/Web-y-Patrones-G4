@@ -32,10 +32,10 @@ public class ComunicadoController {
     public String nuevo(Model model) {
 
         model.addAttribute("comunicado", new Comunicado());
-
+        
         model.addAttribute(
                 "estudiantes",
-                estudianteService.getEstudiantes(true)
+                estudianteService.getEstudiantesEnCurso()
         );
 
         return "comunicado/registro";
@@ -73,8 +73,8 @@ public class ComunicadoController {
             Model model,
             RedirectAttributes redirectAttributes) {
 
-        Optional<Estudiante> estudianteOpt =
-                estudianteService.getEstudiante(idEstudiante);
+        Optional<Estudiante> estudianteOpt
+                = estudianteService.getEstudiante(idEstudiante);
 
         if (estudianteOpt.isEmpty()) {
 

@@ -31,6 +31,11 @@ public class EstudianteService {
         }
         return estudianteRepository.findAll();
     }
+    
+    @Transactional(readOnly = true)
+    public List<Estudiante> getEstudiantesEnCurso() {
+        return estudianteRepository.findByCursoIsNotNull();
+    }
 
     @Transactional(readOnly = true)
     public Optional<Estudiante> getEstudiante(Integer idEstudiante) {
