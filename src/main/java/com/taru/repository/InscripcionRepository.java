@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InscripcionRepository extends JpaRepository<Inscripcion, Integer> {
     List<Inscripcion> findByEstado(String estado);
-    
+
+    List<Inscripcion> findByEstudiante_IdEstudianteAndEstado(Integer idEstudiante, String estado);
+
     void deleteByEstudiante_IdEstudiante(Integer idEstudiante);
     
 }

@@ -21,7 +21,16 @@
                   th:object="${ausencia}"
                   method="post">
 
-                <div class="mb-3">
+                <div class="mb-3" th:if="${estudianteLogueado != null}">
+                    <label class="form-label">Estudiante</label>
+
+                    <input type="text"
+                           class="form-control"
+                           readonly
+                           th:value="${estudianteLogueado.nombre + ' ' + estudianteLogueado.apellido}"/>
+                </div>
+
+                <div class="mb-3" th:if="${estudianteLogueado == null}">
                     <label class="form-label">Estudiante</label>
 
                     <select class="form-select"
@@ -38,7 +47,44 @@
                     </select>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3" th:if="${estudianteLogueado != null and cursos != null and cursos.size() == 1}">
+                    <label class="form-label">Curso</label>
+
+                    <input type="text"
+                           class="form-control"
+                           readonly
+                           th:value="${cursos[0].nombre}"/>
+
+                    <input type="hidden"
+                           th:field="*{curso}"
+                           th:value="${cursos[0].idCurso}"/>
+                </div>
+
+                <div class="mb-3" th:if="${estudianteLogueado != null and cursos != null and cursos.size() > 1}">
+                    <label class="form-label">Curso</label>
+
+                    <select class="form-select"
+                            th:field="*{curso}"
+                            required>
+
+                        <option value="">Seleccione un curso</option>
+
+                        <option th:each="curso : ${cursos}"
+                                th:value="${curso.idCurso}"
+                                th:text="${curso.nombre}">
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="mb-3" th:if="${estudianteLogueado != null and (cursos == null or cursos.empty)}">
+                    <label class="form-label">Curso</label>
+                    <p class="text-muted">
+                        No tienes ninguna inscripción confirmada en un curso, así que no puedes notificar una ausencia.
+                    </p>
+                </div>
+
+                <div class="mb-3" th:if="${estudianteLogueado == null}">
                     <label class="form-label">Curso</label>
 
                     <select class="form-select"

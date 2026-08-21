@@ -1,5 +1,6 @@
 package com.taru.service;
 
+import com.taru.domain.Curso;
 import com.taru.domain.Inscripcion;
 import com.taru.repository.InscripcionRepository;
 import java.time.LocalDate;
@@ -19,6 +20,16 @@ public class InscripcionService {
     @Transactional(readOnly = true)
     public List<Inscripcion> getInscripciones() {
         return inscripcionRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Curso> getCursosInscritos(Integer idEstudiante) {
+        return inscripcionRepository
+                .findByEstudiante_IdEstudianteAndEstado(idEstudiante, "Confirmada")
+                .stream()
+                .map(Inscripcion::getCurso)
+                .distinct()
+                .toList();
     }
 
     @Transactional

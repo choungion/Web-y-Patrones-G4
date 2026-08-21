@@ -51,6 +51,19 @@
                                     <label class="form-check-label">[[#{usuario.activo}]]</label>
                                 </div>
                                 <div class="mb-3">
+                                    <label>Estudiante asociado</label>
+                                    <select class="form-select" th:field="*{estudiante.idEstudiante}">
+                                        <option value="">-- Ninguno (cuenta de administrador) --</option>
+                                        <option th:each="estudiante : ${estudiantes}"
+                                                th:value="${estudiante.idEstudiante}"
+                                                th:text="${estudiante.nombre + ' ' + estudiante.apellido}">
+                                        </option>
+                                    </select>
+                                    <small class="text-muted">
+                                        Solo se necesita si esta cuenta es para que un estudiante entre a "Mi Portal".
+                                    </small>
+                                </div>
+                                <div class="mb-3">
                                     <label>[[#{usuario.imagen}]]</label>
                                     <input type="file" name="imagenFile" onchange="mostrarImagen(this);" class="form-control" accept="image/*"/>
                                     <img id="blah" src="#" alt="imagen de usuario" height="120" class="mt-2 rounded"/>
@@ -181,6 +194,19 @@
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" name="activo" th:field="*{activo}"/>
                                     <label class="form-check-label">[[#{usuario.activo}]]</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label>Estudiante asociado</label>
+                                    <select class="form-select" th:field="*{estudiante.idEstudiante}">
+                                        <option value="">-- Ninguno (cuenta de administrador) --</option>
+                                        <option th:each="estudiante : ${estudiantes}"
+                                                th:value="${estudiante.idEstudiante}"
+                                                th:text="${estudiante.nombre + ' ' + estudiante.apellido}">
+                                        </option>
+                                    </select>
+                                    <small class="text-muted">
+                                        Solo se necesita si esta cuenta es para que un estudiante entre a "Mi Portal".
+                                    </small>
                                 </div>
                                 <div class="mb-3">
                                     <label>[[#{usuario.imagen}]]</label>

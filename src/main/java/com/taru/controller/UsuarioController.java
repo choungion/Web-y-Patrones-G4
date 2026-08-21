@@ -1,6 +1,7 @@
 package com.taru.controller;
 
 import com.taru.domain.Usuario;
+import com.taru.service.EstudianteService;
 import com.taru.service.UsuarioService;
 import jakarta.validation.Valid;
 import java.util.Optional;
@@ -17,9 +18,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+    private final EstudianteService estudianteService;
 
-    public UsuarioController(UsuarioService usuarioService) {
+    public UsuarioController(UsuarioService usuarioService, EstudianteService estudianteService) {
         this.usuarioService = usuarioService;
+        this.estudianteService = estudianteService;
     }
 
     @GetMapping("/listado")
@@ -27,6 +30,7 @@ public class UsuarioController {
         var usuarios = usuarioService.getUsuarios(false);
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("totalUsuarios", usuarios.size());
+        model.addAttribute("estudiantes", estudianteService.getEstudiantes(false));
         if (!model.containsAttribute("usuario")) {
             model.addAttribute("usuario", new Usuario());
         }
@@ -77,6 +81,7 @@ public class UsuarioController {
         Usuario usuario = usuarioOpt.get();
         usuario.setPassword("");
         model.addAttribute("usuario", usuario);
+        model.addAttribute("estudiantes", estudianteService.getEstudiantes(false));
         return "/usuario/modifica";
     }
 }
