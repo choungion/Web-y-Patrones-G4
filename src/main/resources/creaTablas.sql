@@ -352,6 +352,7 @@ INSERT INTO ruta (ruta, id_rol) VALUES
 ('/cursos/guardar', 1),
 ('/cursos/modifica/**', 1),
 ('/cursos/eliminar', 1),
+('/ausencia/listado', 1),
 ('/estudiante/**', 1),
 ('/encargado/**', 1),
 ('/asistencia/listado', 1),
