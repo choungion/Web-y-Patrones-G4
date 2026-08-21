@@ -1,8 +1,13 @@
 package com.taru.service;
 
 import com.taru.domain.Estudiante;
+import com.taru.repository.AsistenciaRepository;
+import com.taru.repository.AusenciaRepository;
+import com.taru.repository.ComunicadoRepository;
 import com.taru.repository.EstudianteRepository;
 import com.taru.repository.InscripcionRepository;
+import com.taru.repository.MensualidadRepository;
+import com.taru.repository.UsuarioRepository;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +21,28 @@ public class EstudianteService {
 
     private final EstudianteRepository estudianteRepository;
     private final InscripcionRepository inscripcionRepository;
+    private final AsistenciaRepository asistenciaRepository;
+    private final AusenciaRepository ausenciaRepository;
+    private final ComunicadoRepository comunicadoRepository;
+    private final MensualidadRepository mensualidadRepository;
+    private final UsuarioRepository usuarioRepository;
     private final FirebaseStorageService firebaseStorageService;
 
-    public EstudianteService(EstudianteRepository estudianteRepository, InscripcionRepository inscripcionRepository, FirebaseStorageService firebaseStorageService) {
+    public EstudianteService(EstudianteRepository estudianteRepository,
+            InscripcionRepository inscripcionRepository,
+            AsistenciaRepository asistenciaRepository,
+            AusenciaRepository ausenciaRepository,
+            ComunicadoRepository comunicadoRepository,
+            MensualidadRepository mensualidadRepository,
+            UsuarioRepository usuarioRepository,
+            FirebaseStorageService firebaseStorageService) {
         this.estudianteRepository = estudianteRepository;
         this.inscripcionRepository = inscripcionRepository;
+        this.asistenciaRepository = asistenciaRepository;
+        this.ausenciaRepository = ausenciaRepository;
+        this.comunicadoRepository = comunicadoRepository;
+        this.mensualidadRepository = mensualidadRepository;
+        this.usuarioRepository = usuarioRepository;
         this.firebaseStorageService = firebaseStorageService;
     }
 
@@ -65,9 +87,34 @@ public class EstudianteService {
         if (!estudianteRepository.existsById(idEstudiante)) {
             throw new IllegalArgumentException("El estudiante con ID " + idEstudiante + " no existe.");
         }
+
+        boolean tieneMensualidades = !mensualidadRepository
+                .findByInscripcionEstudianteIdEstudianteOrderByFechaVencimientoDesc(idEstudiante)
+                .isEmpty();
+
+        if (tieneMensualidades) {
+            throw new IllegalStateException(
+                    "No se puede eliminar: el estudiante tiene mensualidades/pagos en su historial. "
+                    + "Para conservar ese historial, marcalo como inactivo en vez de eliminarlo."
+            );
+        }
+
         try {
+            usuarioRepository.findByEstudiante_IdEstudiante(idEstudiante).ifPresent(usuario -> {
+                usuario.setEstudiante(null);
+                usuarioRepository.save(usuario);
+            });
+
+            asistenciaRepository.deleteByEstudiante_IdEstudiante(idEstudiante);
+            ausenciaRepository.deleteByEstudiante_IdEstudiante(idEstudiante);
+            comunicadoRepository.deleteByEstudiante_IdEstudiante(idEstudiante);
             inscripcionRepository.deleteByEstudiante_IdEstudiante(idEstudiante);
+
+            asistenciaRepository.flush();
+            ausenciaRepository.flush();
+            comunicadoRepository.flush();
             inscripcionRepository.flush();
+
             estudianteRepository.deleteById(idEstudiante);
             estudianteRepository.flush();
         } catch (DataIntegrityViolationException e) {

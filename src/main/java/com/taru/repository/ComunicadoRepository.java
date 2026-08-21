@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ComunicadoRepository extends JpaRepository<Comunicado, Integer> {
 
     List<Comunicado> findByEstudianteOrderByFechaEnvioDesc(Estudiante estudiante);
+
+    void deleteByEstudiante_IdEstudiante(Integer idEstudiante);
 }

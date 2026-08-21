@@ -40,6 +40,14 @@ public class UsuarioService {
     }
 
     @Transactional(readOnly = true)
+    public List<Integer> getIdsEstudiantesConCuenta(Integer idUsuarioAExcluir) {
+        return usuarioRepository.findByEstudianteIsNotNull().stream()
+                .filter(u -> idUsuarioAExcluir == null || !u.getIdUsuario().equals(idUsuarioAExcluir))
+                .map(u -> u.getEstudiante().getIdEstudiante())
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public Optional<Usuario> getUsuario(Integer idUsuario) {
         return usuarioRepository.findById(idUsuario);
     }
@@ -57,6 +65,18 @@ public class UsuarioService {
             Usuario encontrado = duplicado.get();
             if (idUsuario == null || !encontrado.getIdUsuario().equals(idUsuario)) {
                 throw new DataIntegrityViolationException("El usuario o correo ya esta en uso.");
+            }
+        }
+
+        if (usuario.getEstudiante() != null && usuario.getEstudiante().getIdEstudiante() != null) {
+            Optional<Usuario> yaAsociado = usuarioRepository
+                    .findByEstudiante_IdEstudiante(usuario.getEstudiante().getIdEstudiante());
+            if (yaAsociado.isPresent()) {
+                Usuario encontrado = yaAsociado.get();
+                if (idUsuario == null || !encontrado.getIdUsuario().equals(idUsuario)) {
+                    throw new DataIntegrityViolationException(
+                            "Ese estudiante ya tiene una cuenta asociada (" + encontrado.getUsername() + ").");
+                }
             }
         }
 
@@ -86,7 +106,6 @@ public class UsuarioService {
                 usuario.setRutaImagen(rutaImagen);
                 usuarioRepository.save(usuario);
             } catch (IOException e) {
-                // Se ignora: el usuario queda guardado aunque falle la subida de la imagen.
             }
         }
 

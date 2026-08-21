@@ -1,9 +1,11 @@
 package com.taru.controller;
 
+import com.taru.domain.Estudiante;
 import com.taru.domain.Usuario;
 import com.taru.service.EstudianteService;
 import com.taru.service.UsuarioService;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -30,7 +32,7 @@ public class UsuarioController {
         var usuarios = usuarioService.getUsuarios(false);
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("totalUsuarios", usuarios.size());
-        model.addAttribute("estudiantes", estudianteService.getEstudiantes(false));
+        model.addAttribute("estudiantes", estudiantesDisponibles(null));
         if (!model.containsAttribute("usuario")) {
             model.addAttribute("usuario", new Usuario());
         }
@@ -81,7 +83,14 @@ public class UsuarioController {
         Usuario usuario = usuarioOpt.get();
         usuario.setPassword("");
         model.addAttribute("usuario", usuario);
-        model.addAttribute("estudiantes", estudianteService.getEstudiantes(false));
+        model.addAttribute("estudiantes", estudiantesDisponibles(idUsuario));
         return "/usuario/modifica";
+    }
+
+    private List<Estudiante> estudiantesDisponibles(Integer idUsuarioAExcluir) {
+        var idsConCuenta = usuarioService.getIdsEstudiantesConCuenta(idUsuarioAExcluir);
+        return estudianteService.getEstudiantes(false).stream()
+                .filter(e -> !idsConCuenta.contains(e.getIdEstudiante()))
+                .toList();
     }
 }

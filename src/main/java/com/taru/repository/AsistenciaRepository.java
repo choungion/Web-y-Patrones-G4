@@ -20,4 +20,6 @@ public interface AsistenciaRepository
             Estudiante estudiante,
             LocalDate fecha
     );
+
+    void deleteByEstudiante_IdEstudiante(Integer idEstudiante);
 }

@@ -65,7 +65,7 @@ create table estudiante (
 create table inscripcion (
   id_inscripcion INT NOT NULL AUTO_INCREMENT,
   fecha_inscripcion DATE NOT NULL,
-  estado VARCHAR(20) DEFAULT 'Pendiente',
+  estado VARCHAR(20) DEFAULT 'Confirmada',
   id_estudiante INT NOT NULL,
   id_curso INT NOT NULL,
   fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -166,7 +166,7 @@ insert into estudiante (nombre, apellido, fecha_nacimiento, telefono, correo, di
 
 insert into inscripcion (fecha_inscripcion, estado, id_estudiante, id_curso) values
 (CURDATE(), 'Confirmada', 1, 3),
-(CURDATE(), 'Pendiente', 2, 2);
+(CURDATE(), 'Confirmada', 2, 2);
 
 INSERT INTO asistencia
 (fecha, estado, observaciones, id_estudiante, id_curso)
