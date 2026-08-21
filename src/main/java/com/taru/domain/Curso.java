@@ -15,6 +15,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -57,6 +59,8 @@ public class Curso implements Serializable {
 
     private boolean activo;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "curso")
     private List<Estudiante> estudiantes;
 }

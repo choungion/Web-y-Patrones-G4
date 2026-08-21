@@ -15,6 +15,8 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import java.util.List;
 
 @Data
@@ -42,6 +44,8 @@ public class Inscripcion implements Serializable {
     @JoinColumn(name = "id_curso", nullable = false)
     private Curso curso;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "inscripcion",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)

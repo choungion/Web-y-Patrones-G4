@@ -12,6 +12,8 @@ import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -34,7 +36,8 @@ public class Encargado implements Serializable {
 
     @Column(length = 100)
     private String correo;
-
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "encargado")
     private List<Estudiante> estudiantes;
 }

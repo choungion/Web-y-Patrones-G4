@@ -56,8 +56,7 @@
                            th:value="${cursos[0].nombre}"/>
 
                     <input type="hidden"
-                           th:field="*{curso}"
-                           th:value="${cursos[0].idCurso}"/>
+                           th:field="*{curso}"/>
                 </div>
 
                 <div class="mb-3" th:if="${estudianteLogueado != null and cursos != null and cursos.size() > 1}">
