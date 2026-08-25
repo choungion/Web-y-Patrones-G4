@@ -2,8 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <body>
         <!-- fragmento 1: Filtrar mensualidades por estudiante y estado -->
-        <section th:fragment="filtros">
-            <div class="card mb-3">
+        <section th:fragment="filtros" 
+                 >
+            <div class="card mb-3" th:if="${session.usuarioIdEstudiante == null}">
                 <div class="card-body">
 
                     <form th:action="@{/mensualidad/listado}"
