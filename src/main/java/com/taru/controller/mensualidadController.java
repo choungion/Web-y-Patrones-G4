@@ -10,6 +10,7 @@ import com.taru.repository.EstudianteRepository;
 import com.taru.repository.PagoRepository;
 import com.taru.service.MensualidadService;
 import com.taru.service.PagoService;
+import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +45,28 @@ public class mensualidadController {
     public String listado(
             @RequestParam(required = false) Mensualidad.EstadoMensualidad estado,
             @RequestParam(required = false) Integer idEstudiante,
-            Model model) {
-        List<Mensualidad> mensualidades
-                = mensualidadService.obtenerMensualidades(estado, idEstudiante);
+            Model model, HttpSession session) {
+
+        Integer usuarioIdEstudiante
+                = (Integer) session.getAttribute("usuarioIdEstudiante");
+
+        List<Mensualidad> mensualidades;
+        if (usuarioIdEstudiante != null) {
+
+            // Estudiante: solamente sus mensualidades
+            mensualidades = mensualidadService.obtenerMensualidades(
+                    estado,
+                    usuarioIdEstudiante
+            );
+        } else {
+
+            // Administradora: puede filtrar libremente
+            mensualidades = mensualidadService.obtenerMensualidades(
+                    estado,
+                    idEstudiante
+            );
+        }
+
         Map<Integer, Pago> pagos = new HashMap<>();
         for (Mensualidad mensualidad : mensualidades) {
             pagoService
@@ -96,7 +116,8 @@ public class mensualidadController {
 
     @GetMapping("/pago/{idMensualidad}")
     @ResponseBody
-    public Pago obtenerPago(@PathVariable Integer idMensualidad) {
+    public Pago obtenerPago(@PathVariable Integer idMensualidad
+    ) {
 
         return pagoRepository
                 .findByMensualidad_IdMensualidad(idMensualidad)

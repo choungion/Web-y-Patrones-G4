@@ -224,20 +224,6 @@ VALUES
  'recibos/2026/08/maria_agosto.jpg');
 
 
-
-
-
-CREATE TABLE asistencia (
-    id_asistencia INT AUTO_INCREMENT PRIMARY KEY,
-    fecha DATE NOT NULL,
-    estado VARCHAR(30) NOT NULL,
-    observaciones VARCHAR(255),
-    id_estudiante INT NOT NULL,
-    id_curso INT NOT NULL,
-    FOREIGN KEY (id_estudiante) REFERENCES estudiante(id_estudiante),
-    FOREIGN KEY (id_curso) REFERENCES curso(id_curso)
-)   ENGINE = InnoDB;
-
 -- Tabla de usuarios
 CREATE TABLE usuario (
   id_usuario INT NOT NULL AUTO_INCREMENT,

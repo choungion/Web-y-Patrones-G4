@@ -51,13 +51,20 @@
                                     Mi Asistencia
                                 </a>
                             </li>
+                            <li>
+                                <a class="dropdown-item" 
+                                   th:href="@{/mensualidad/listado}">
+                                    <i class="fa-solid fa-credit-card"></i> 
+                                    [[#{plantilla.mensualidades}]]
+                                </a>
+                            </li>
                             <li th:if="${session.usuarioIdEstudiante != null}">
-    <a class="dropdown-item"
-       th:href="@{/comunicado/estudiante/{id}(id=${session.usuarioIdEstudiante})}">
-        <i class="fa-solid fa-bullhorn"></i>
-        Comunicados
-    </a>
-</li>
+                                <a class="dropdown-item"
+                                   th:href="@{/comunicado/estudiante/{id}(id=${session.usuarioIdEstudiante})}">
+                                    <i class="fa-solid fa-bullhorn"></i>
+                                    Comunicados
+                                </a>
+                            </li>
 
                             <li th:if="${session.usuarioIdEstudiante != null}">
                                 <a class="dropdown-item"
@@ -66,7 +73,7 @@
                                     Notificar ausencia
                                 </a>
                             </li>
-                            
+
 
                             <li th:if="${session.usuarioIdEstudiante == null}">
                                 <span class="dropdown-item-text small text-muted">
