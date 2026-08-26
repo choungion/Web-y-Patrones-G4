@@ -12,4 +12,6 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, Integer>
     public List<Estudiante> findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(String nombre, String apellido);
 
     public List<Estudiante> findByCursoIsNotNull();
+    
+    List<Estudiante> findByCursoIdCurso(Integer idCurso);
 }

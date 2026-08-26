@@ -149,6 +149,18 @@ CREATE TABLE cobro (
         REFERENCES mensualidad(id_mensualidad)
 ) ENGINE=InnoDB;
 
+CREATE TABLE comunicado (
+    id_comunicado INT AUTO_INCREMENT PRIMARY KEY,
+    id_estudiante INT,
+    titulo VARCHAR(150) NOT NULL,
+    mensaje VARCHAR(1000) NOT NULL,
+    fecha_envio DATETIME,
+    
+    CONSTRAINT fk_comunicado_estudiante
+        FOREIGN KEY (id_estudiante)
+        REFERENCES estudiante(id_estudiante)
+);
+
 insert into encargado (nombre, telefono, correo) values
 ('Laura Ramirez', '8123-4567', 'laura.ramirez@correo.com'),
 ('Andrea Cruz', '8234-5678', 'andrea.cruz@correo.com');
