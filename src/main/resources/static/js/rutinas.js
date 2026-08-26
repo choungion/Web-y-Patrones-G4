@@ -70,7 +70,7 @@ function cargarDatosPago(boton) {
     document.getElementById("periodoPago").value = periodo;
     document.getElementById("montoPago").value = monto;
 }
-
+//pagos historial
 function cargarDetallePago(boton) {
 
     const fecha = boton.getAttribute("data-fecha");
@@ -103,3 +103,22 @@ function cargarDetallePago(boton) {
         mensajeRecibo.style.display = "block";
     }
 }
+ //notificaciones
+ function mostrarDestinatario() {
+
+        const tipo = document.getElementById("tipoDestinatario").value;
+
+        const divEstudiante = document.getElementById("divEstudiante");
+        const divCurso = document.getElementById("divCurso");
+
+        divEstudiante.style.display = "none";
+        divCurso.style.display = "none";
+
+        if (tipo === "ESTUDIANTE") {
+            divEstudiante.style.display = "block";
+        }
+
+        if (tipo === "CURSO") {
+            divCurso.style.display = "block";
+        }
+    }

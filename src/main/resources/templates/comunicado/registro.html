@@ -1,81 +1,115 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{general/fragmentos :: head}">
-    <title>Nuevo comunicado</title>
-</head>
+    <head th:replace="~{general/fragmentos :: head}">
+        <title>Nuevo comunicado</title>
+    </head>
 
-<body>
+    <body>
 
-<div th:replace="~{general/fragmentos :: header}"></div>
+        <div th:replace="~{general/fragmentos :: header}"></div>
 
-<div class="container mt-4">
+        <div class="container mt-4">
 
-    <div class="card">
+            <div class="card">
 
-        <div class="card-header bg-success text-white">
-            <h3>Enviar comunicado</h3>
+                <div class="card-header bg-success text-white">
+                    <h3>Enviar comunicado</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <form th:action="@{/comunicado/guardar}"
+                          th:object="${comunicado}"
+                          method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Enviar a:</label>
+
+                            <select id="tipoDestinatario"
+                                    name="tipoDestinatario"
+                                    class="form-select"
+                                    required
+                                    onchange="mostrarDestinatario()">
+
+                                <option value="">Seleccione una opción</option>
+                                <option value="ESTUDIANTE">Un estudiante</option>
+                                <option value="CURSO">Un curso</option>
+                                <option value="TODOS">Todos los estudiantes</option>
+
+                            </select>
+                        </div>
+                        <div class="mb-3" id="divEstudiante" style="display: none;">
+
+                            <label class="form-label">Estudiante</label>
+
+                            <select id="estudiante"
+                                    name="idEstudiante"
+                                    class="form-select">
+
+                                <option value="">Seleccione un estudiante</option>
+
+                                <option th:each="estudiante : ${estudiantes}"
+                                        th:value="${estudiante.idEstudiante}"
+                                        th:text="${estudiante.nombre + ' ' + estudiante.apellido}">
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3" id="divCurso" style="display: none;">
+
+                            <label class="form-label">Curso</label>
+
+                            <select id="curso"
+                                    name="idCurso"
+                                    class="form-select">
+
+                                <option value="">Seleccione un curso</option>
+
+                                <option th:each="curso : ${cursos}"
+                                        th:value="${curso.idCurso}"
+                                        th:text="${curso.nombre}">
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Título</label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   th:field="*{titulo}"
+                                   maxlength="150"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Mensaje</label>
+
+                            <textarea class="form-control"
+                                      th:field="*{mensaje}"
+                                      rows="5"
+                                      maxlength="1000"
+                                      required>
+                            </textarea>
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-success">
+                            Enviar comunicado
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+
         </div>
 
-        <div class="card-body">
+        <div th:replace="~{general/fragmentos :: footer}"></div>
 
-            <form th:action="@{/comunicado/guardar}"
-                  th:object="${comunicado}"
-                  method="post">
-
-                <div class="mb-3">
-                    <label class="form-label">Destinatario</label>
-
-                    <select class="form-select"
-                            th:field="*{estudiante.idEstudiante}"
-                            required>
-
-                        <option value="">
-                            Seleccione un estudiante
-                        </option>
-
-                        <option th:each="estudiante : ${estudiantes}"
-                                th:value="${estudiante.idEstudiante}"
-                                th:text="${estudiante.nombre + ' ' + estudiante.apellido}">
-                        </option>
-
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Título</label>
-
-                    <input type="text"
-                           class="form-control"
-                           th:field="*{titulo}"
-                           maxlength="150"
-                           required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Mensaje</label>
-
-                    <textarea class="form-control"
-                              th:field="*{mensaje}"
-                              rows="5"
-                              maxlength="1000"
-                              required>
-                    </textarea>
-                </div>
-
-                <button type="submit"
-                        class="btn btn-success">
-                    Enviar comunicado
-                </button>
-
-            </form>
-
-        </div>
-    </div>
-
-</div>
-
-<div th:replace="~{general/fragmentos :: footer}"></div>
-
-</body>
+    </body>
 </html>
